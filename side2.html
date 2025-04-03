@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet the Team</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap");
+
+        :root {
+            --bg: #064358;
+            --clr-1: #1e3a8a;
+            --clr-2: #2563eb;
+            --clr-3: #3b82f6;
+            --clr-4: #60a5fa;
+            --blur: 1rem;
+            --fs: clamp(3rem, 8vw, 7rem);
+            --ls: clamp(-1.75px, -0.25vw, -3.5px);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            font-family: "Inter", "DM Sans", Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: hidden; /* Start with hidden overflow to prevent scrolling during intro */
+        }
+
+        .stars-container {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            overflow: hidden;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--twinkle-duration) infinite;
+            opacity: 0.5;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+            animation: shoot var(--shoot-duration) linear infinite;
+            transform: rotate(-45deg);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 1);
+            pointer-events: none;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        @keyframes shoot {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(-45deg); opacity: 1; }
+            100% { transform: translateX(var(--trail-length)) translateY(var(--trail-length)) rotate(-45deg); opacity: 0; }
+        }
+
+        .content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            width: 80%;
+            max-width: 1200px;
+            margin: 50px auto 0;
+            padding-top: 20vh;
+        }
+
+        .title {
+            font-weight: 800;
+            letter-spacing: var(--ls);
+            color: white;
+            margin: 0;
+            opacity: 0;
+        }
+
+        .title.main {
+            font-size: var(--fs);
+            -webkit-animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) both;
+            animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) both;
+        }
+
+        .title.sub {
+            font-size: clamp(2rem, 6vw, 5rem);
+            -webkit-animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) 1s both;
+            animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) 1s both;
+        }
+
+        @-webkit-keyframes focus-in-expand-fwd {
+            0% { letter-spacing: -.5em; -webkit-transform: translateZ(-800px); transform: translateZ(-800px); -webkit-filter: blur(12px); filter: blur(12px); opacity: 0; }
+            100% { -webkit-transform: translateZ(0); transform: translateZ(0); -webkit-filter: blur(0); filter: blur(0); opacity: 1; }
+        }
+        @keyframes focus-in-expand-fwd {
+            0% { letter-spacing: -.5em; -webkit-transform: translateZ(-800px); transform: translateZ(-800px); -webkit-filter: blur(12px); filter: blur(12px); opacity: 0; }
+            100% { -webkit-transform: translateZ(0); transform: translateZ(0); -webkit-filter: blur(0); filter: blur(0); opacity: 1; }
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            opacity: 0;
+            margin-top: 20px;
+        }
+
+        .intro-text:nth-child(3) {
+            animation: fadeInSlow 2s ease-in 2s both;
+        }
+        .intro-text:nth-child(4) {
+            animation: fadeInSlow 2s ease-in 4s both;
+        }
+        .intro-text:nth-child(5) {
+            animation: fadeInSlow 2s ease-in 6s both;
+        }
+
+        @keyframes fadeInSlow {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .team-container {
+            position: relative;
+            z-index: 2;
+            padding: 100px 20px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .team-container.visible {
+            opacity: 1;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            margin-bottom: 100px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+        }
+
+        /* White glowing divider with left-to-right animation */
+        .team-divider {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.8) 20%, 
+                rgba(255, 255, 255, 1) 50%, 
+                rgba(255, 255, 255, 0.8) 80%, 
+                transparent 100%);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: left center;
+        }
+
+        .team-member.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .team-member.visible .team-divider {
+            animation: dividerReveal 1.2s forwards 0.5s;
+        }
+
+        @keyframes dividerReveal {
+            0% { 
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            100% { 
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        .team-member.left {
+            align-self: flex-start;
+        }
+
+        .team-member.right {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .team-member.right .text-content {
+            text-align: right;
+        }
+
+        .team-member.right-only {
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .team-member img {
+            width: 300px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
+        }
+
+        .team-member.visible img {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .text-content {
+            width: calc(100% - 340px);
+            padding: 0 20px;
+        }
+
+        .right-only .text-content {
+            width: 100%;
+        }
+
+        .name, .role, .description {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .team-member.visible .name,
+        .team-member.visible .role,
+        .team-member.visible .description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .team-member.visible .name {
+            transition-delay: 0.3s;
+        }
+        .team-member.visible .role {
+            transition-delay: 0.5s;
+        }
+        .team-member.visible .description {
+            transition-delay: 0.7s;
+        }
+
+        .name {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .role {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #d3d3d3;
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 1em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Special styling for the trio section */
+        .team-member.trio {
+            flex-direction: column;
+            text-align: center;
+            max-width: 1200px;
+            align-self: center;
+        }
+
+        .trio-members {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .trio-member {
+            flex: 0 1 30%;
+            padding: 0 15px;
+        }
+
+        .trio-description {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .trio-image {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 30px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="stars-container"></div>
+    <div class="content">
+        <h1 class="title main">DE CE EXIST?</h1>
+        <h1 class="title sub">Sunt Project UM</h1>
+        <p class="intro-text">O companie de producție de film creativ</p>
+        <p class="intro-text">Exist ca să spun povești pe care alții nu îndrăznesc să le spună.</p>
+        <p class="intro-text">Și dacă ai ajuns până aici, înseamnă că și tu ești parte din povestea mea.</p>
+    </div>
+    <div class="team-container">
+        <!-- Dragoș Turea -->
+        <div class="team-member left">
+            <img src="dragos.JPEG" alt="Dragoș Turea" class="member-image">
+            <div class="text-content">
+                <div class="name">Dragoș Turea</div>
+                <div class="role">Regizor, scenarist, producător</div>
+                <div class="description">M-am născut din ideile și viziunea lui. Port în mine amprenta universului său creativ care nu se repetă, nu se explică — doar se simte.</div>
+            </div>
+            <div class="team-divider"></div>
+        </div>
+
+        <!-- Sergiu Voloc -->
+        <div class="team-member right-only">
+            <div class="text-content">
+                <div class="name">Sergiu Voloc</div>
+                <div class="role">Actor, compozitor</div>
+                <div class="description">Cel vine din univers și îmbracă umanul ca pe un destin ales.</div>
+            </div>
+            <div class="team-divider"></div>
+        </div>
+
+        <!-- Sandu and Mircea Section -->
+        <div class="team-member trio">
+            <div class="trio-members">
+                <div class="trio-member">
+                    <div class="name">Sandu Bublițchi</div>
+                    <div class="role">Interpret vioară</div>
+                </div>
+                <div class="trio-member">
+                    <div class="name">Mircea - Adrian Flautistu</div>
+                    <div class="role">Interpret contrabas</div>
+                </div>
+            </div>
+            
+            <div class="trio-description">
+                <div class="description">Unul dă intensitate, celălalt adâncime. Împreună, sunt prezența sonoră care susțin povestea cu emoția pe care cuvintele nu o pot reda.</div>
+            </div>
+            
+            <img class="trio-image" src="3members.JPG"  alt="Sandu and Mircea">
+            <div class="team-divider"></div>
+        </div>
+
+        <!-- Nadejda Voloc -->
+        <div class="team-member left">
+            <img src="nadejda.JPG" alt="Nadejda Voloc" class="member-image">
+            <div class="text-content">
+                <div class="name">Nadejda Voloc</div>
+                <div class="role">Actriță</div>
+                <div class="description">Prin ea emoția prinde rădăcini.</div>
+            </div>
+            <div class="team-divider"></div>
+        </div>
+
+        <!-- Nicoleta Cocoță -->
+        <div class="team-member right">
+            <img src="nicoleta.PNG" alt="Nicoleta Cocoță" class="member-image">
+            <div class="text-content">
+                <div class="name">Nicoleta Cocoță</div>
+                <div class="role">Director de producție</div>
+                <div class="description">Este cea care ține echilibrul între idee și realitate. Face tot ce nu se vede, dar se simte când lipsește.</div>
+            </div>
+            <div class="team-divider"></div>
+        </div>
+
+        <!-- Vladislav Hîncu -->
+        <div class="team-member left">
+            <img src="vladislav.jpg" alt="Vladislav Hîncu" class="member-image">
+            <div class="text-content">
+                <div class="name">Vladislav Hîncu</div>
+                <div class="role">Director de imagine</div>
+                <div class="description">Cel care dă formă și profunzime viziunii. Crează imaginea filmului cu ochiul unui pictor și precizia unui arhitect.</div>
+            </div>
+            <div class="team-divider"></div>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <span>Scroll down</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+    </div>
+
+    <script>
+        const starsContainer = document.querySelector('.stars-container');
+        const teamContainer = document.querySelector('.team-container');
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+
+        // Static stars
+        for (let i = 0; i < 300; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.width = `${Math.random() * 1.5 + 0.5}px`;
+            star.style.height = star.style.width;
+            star.style.setProperty('--twinkle-duration', `${Math.random() * 4 + 2}s`);
+            starsContainer.appendChild(star);
+        }
+
+        // Shooting stars
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.setProperty('--shoot-duration', `${Math.random() * 2 + 1}s`);
+            star.style.setProperty('--trail-length', `${Math.random() * 200 + 100}px`);
+            starsContainer.appendChild(star);
+            setTimeout(() => star.remove(), parseFloat(star.style.getPropertyValue('--shoot-duration')) * 1000);
+        }
+        setInterval(createShootingStar, 200);
+
+        // Show team container and enable scrolling after all intro text is visible
+        setTimeout(() => {
+            teamContainer.classList.add('visible');
+            document.body.style.overflowY = 'auto';
+            scrollIndicator.classList.add('visible');
+            
+            // Start showing team members as they come into view
+            const teamMembers = document.querySelectorAll('.team-member');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { 
+                threshold: 0.3,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            teamMembers.forEach(member => {
+                observer.observe(member);
+            });
+
+            // Hide scroll indicator when scrolling starts
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    scrollIndicator.classList.remove('visible');
+                }
+            }, { once: true });
+
+            // Smooth auto-scroll
+            let startTime = null;
+            const duration = 30000; // 30 seconds total scroll time
+            const startPosition = window.pageYOffset;
+            const documentHeight = document.body.scrollHeight;
+            const windowHeight = window.innerHeight;
+            const distance = documentHeight - windowHeight - startPosition;
+            
+            function autoScroll(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = timestamp - startTime;
+                const percentage = Math.min(progress / duration, 1);
+                
+                window.scrollTo(0, startPosition + (distance * percentage));
+                
+                if (percentage < 1) {
+                    window.requestAnimationFrame(autoScroll);
+                }
+            }
+            
+            window.requestAnimationFrame(autoScroll);
+
+        }, 7000); // Wait for all intro text to appear (6s animation + 1s buffer)
+    </script>
+</body>
+</html>
