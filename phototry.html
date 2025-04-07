@@ -12,9 +12,7 @@
             height: 100vh;
             overflow: hidden;
             margin: 0;
-            transition: background-color 1s ease-in-out;
         }
-
 
         .stars-container {
             position: fixed;
@@ -22,13 +20,12 @@
             height: 100vh;
             top: 0;
             left: 0;
-            z-index: 1; 
+            z-index: 1;
             overflow: hidden;
             background: transparent;
             pointer-events: none;
         }
 
-     
         .star {
             position: absolute;
             background: white;
@@ -39,18 +36,29 @@
             opacity: 0.5;
         }
 
-
         .shooting-star {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 
+                       0 0 0 6px rgba(255,255,255,0.1), 
+                       0 0 15px rgba(255,255,255,0.3);
             animation: shoot var(--shoot-duration) linear infinite;
-            transform: rotate(-45deg);
-            box-shadow: 0 0 12px rgba(255, 255, 255, 1);
             pointer-events: none;
         }
 
+        .shooting-star::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+            filter: blur(1px);
+        }
 
         @keyframes twinkle {
             0%, 100% { 
@@ -65,11 +73,14 @@
 
         @keyframes shoot {
             0% {
-                transform: translateX(-100%) translateY(-100%) rotate(-45deg);
+                transform: rotate(315deg) translateX(0);
+                opacity: 1;
+            }
+            70% {
                 opacity: 1;
             }
             100% {
-                transform: translateX(var(--trail-length)) translateY(var(--trail-length)) rotate(-45deg);
+                transform: rotate(315deg) translateX(-800px);
                 opacity: 0;
             }
         }
@@ -86,7 +97,7 @@
             transition: opacity 1s ease-in-out;
         }
 
-        #treeLayerLeft, #treeLayerRight {
+        #treeLayerLeft, #treeLayerRight, #flagLayer {
             position: fixed;
             left: 0;
             top: 0;
@@ -152,9 +163,8 @@
             left: 38vw;
             cursor: pointer;
             z-index: 5;
-            opacity: 0;
+            opacity: 1;
             transition: opacity 1s ease-in-out;
-            animation: bling 2s infinite;
         }
 
         #carImage {
@@ -170,17 +180,18 @@
 
         #carText {
             position: fixed;
-            bottom: 29vh;
-            right: -30vw;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: white;
             font-size: 3vw;
             font-family: 'Times New Roman';
             font-weight: bold;
             text-transform: uppercase;
             z-index: 9;
-            opacity: 1;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+            opacity: 0; /* Start hidden */
             transition: opacity 1s ease-in-out;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
         }
 
         @keyframes drive {
@@ -188,25 +199,24 @@
             100% { right: 125vw; }
         }
 
-
-        @keyframes followCar {
-            0% { right: -30vw; }
-            70% { right: 50vw; transform: translateX(50%); }
-            100% { right: 50vw; transform: translateX(50%); }
-        }
-
-        @keyframes textIdle {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(-5px, -5px); }
-            50% { transform: translate(5px, 5px); }
-            75% { transform: translate(-5px, 5px); }
-            100% { transform: translate(0, 0); }
-        }
-
         @keyframes bling {
             0% { filter: drop-shadow(0 0 0.1vw rgba(255, 255, 255, 0.5)); }
             50% { filter: drop-shadow(0 0 0.3vw rgba(255, 255, 255, 0.9)); }
             100% { filter: drop-shadow(0 0 0.1vw rgba(255, 255, 255, 0.5)); }
+        }
+
+        @keyframes stoneGlow {
+            0% { filter: drop-shadow(0 0 0.05vw rgba(255, 255, 255, 0.4)); }
+            50% { filter: drop-shadow(0 0 0.15vw rgba(255, 255, 255, 0.7)); }
+            100% { filter: drop-shadow(0 0 0.05vw rgba(255, 255, 255, 0.4)); }
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 0.2vw rgba(200, 200, 200, 0.7)); }
+            25% { filter: drop-shadow(0 0 0.6vw rgba(200, 200, 200, 0.9)); }
+            50% { filter: drop-shadow(0 0 0.3vw rgba(200, 200, 200, 0.7)); }
+            75% { filter: drop-shadow(0 0 0.8vw rgba(200, 200, 200, 0.9)); }
+            100% { filter: drop-shadow(0 0 0.2vw rgba(200, 200, 200, 0.7)); }
         }
 
         #mask2Layer {
@@ -227,36 +237,7 @@
             #hammerImage { width: 12vw; bottom: 5vh; left: 5vw; }
             .gif-container { width: 50vw; bottom: 2vh; right: 25vw; }
             #carImage { width: 40vw; bottom: 5vh; }
-            #carText { font-size: 5vw; bottom: 10vh; }
-        }
-
-        @keyframes glow {
-            0% { filter: drop-shadow(0 0 0.2vw rgba(200, 200, 200, 0.7)); }
-            25% { filter: drop-shadow(0 0 0.6vw rgba(200, 200, 200, 0.9)); }
-            50% { filter: drop-shadow(0 0 0.3vw rgba(200, 200, 200, 0.7)); }
-            75% { filter: drop-shadow(0 0 0.8vw rgba(200, 200, 200, 0.9)); }
-            100% { filter: drop-shadow(0 0 0.2vw rgba(200, 200, 200, 0.7)); }
-        }
-
-        .stone-fragment {
-            position: fixed;
-            width: 20vw;
-            height: auto;
-            pointer-events: none;
-            opacity: 1;
-            transform-origin: center;
-            transition: 
-                transform 1s cubic-bezier(0.22, 0.61, 0.36, 1),
-                opacity 0.5s ease-out;
-            z-index: 6;
-            filter: drop-shadow(0.2vw 0.4vw 0.3vw rgba(0,0,0,0.8));
-        }
-
-        .stone-fragment.fragment-animate {
-            transform: 
-                translate(var(--x-final), var(--y-final)) 
-                rotate(var(--rotate-final)) 
-                scale(var(--scale-final));
+            #carText { font-size: 5vw; }
         }
 
         #switchOverlay {
@@ -282,18 +263,6 @@
             transition: opacity 1s ease-in-out;
         }
 
-        #newScene {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, #1e3c72, #2a9134);
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
         #blackFade {
             position: fixed;
             top: 0;
@@ -301,7 +270,7 @@
             width: 100vw;
             height: 100vh;
             background: black;
-            z-index: 9;
+            z-index: 11;
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
@@ -318,6 +287,7 @@
     <img id="maskLayer" src="mask.png" alt="Mask Layer" loading="lazy">
     <img id="treeLayerLeft" src="copaclayerstanga.png" alt="Tree Layer Left" loading="lazy">
     <img id="treeLayerRight" src="copaclayerdreapta.png" alt="Tree Layer Right" loading="lazy">
+    <img id="flagLayer" src="drapele.png" alt="Flag Layer" loading="lazy">
     <div class="image-container">
         <img id="animationFrame" src="standing.png" alt="Animation Frame">
         <img id="overlayImage" src="piatra.png" alt="Overlay Image">
@@ -336,7 +306,6 @@
     <img id="mask2Layer" src="mask2.png" alt="Mask 2 Layer" loading="lazy">
     <audio id="carSound" src="carsound.mp3" preload="auto"></audio>
     <audio id="musicSound" src="muzica.mp3" preload="auto" loop></audio>
-    <div id="newScene"></div>
     <div id="blackFade"></div>
 
     <script>
@@ -356,7 +325,7 @@
         let clickCount = 0;
         let isHammerClicked = false;
 
-        const preloadImages = ["background.png", "copaclayerstanga.png", "copaclayerdreapta.png", "drept.png", "piatra.png", "hammer.png", "outputfinal-unscreen.gif", "piatra1.png", "piatra2.png", "switch_off.png", "switch_on.png", "mask.png", "car.png", "mask2.png"];
+        const preloadImages = ["background.png", "copaclayerstanga.png", "copaclayerdreapta.png", "drept.png", "piatra.png", "hammer.png", "outputfinal-unscreen.gif", "piatra1.png", "piatra2.png", "switch_off.png", "switch_on.png", "mask.png", "car.png", "mask2.png", "drapele.png"];
         preloadImages.forEach(src => {
             const img = new Image();
             img.src = src;
@@ -376,9 +345,9 @@
             const mask2Layer = document.getElementById("mask2Layer");
             const treeLayerLeft = document.getElementById("treeLayerLeft");
             const treeLayerRight = document.getElementById("treeLayerRight");
+            const flagLayer = document.getElementById("flagLayer");
             const maskLayer = document.getElementById("maskLayer");
             const starsContainer = document.querySelector(".stars-container");
-            const newScene = document.getElementById("newScene");
             const blackFade = document.getElementById("blackFade");
 
             document.body.style.pointerEvents = "none";
@@ -390,7 +359,7 @@
                 star.className = 'star';
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 100}%`;
-                star.style.width = `${Math.random() * 4 + 1}px`; 
+                star.style.width = `${Math.random() * 4 + 1}px`;
                 star.style.height = star.style.width;
                 star.style.setProperty('--twinkle-duration', `${Math.random() * 4 + 2}s`);
                 starsContainer.appendChild(star);
@@ -400,29 +369,29 @@
             function createShootingStar() {
                 const star = document.createElement('div');
                 star.className = 'shooting-star';
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.setProperty('--shoot-duration', `${Math.random() * 2 + 1}s`);
-                star.style.setProperty('--trail-length', `${Math.random() * 200 + 100}px`);
+                star.style.left = `${Math.random() * 80}%`;
+                star.style.top = `${Math.random() * 40}%`;
+                const duration = Math.random() * 4 + 4;
+                star.style.setProperty('--shoot-duration', `${duration}s`);
                 starsContainer.appendChild(star);
                 
                 setTimeout(() => {
                     star.remove();
-                }, parseFloat(star.style.getPropertyValue('--shoot-duration')) * 1000);
+                }, duration * 1000);
             }
 
-            setInterval(createShootingStar, 200); 
+            setInterval(createShootingStar, 2000);
 
             // switch click event
             switchImage.addEventListener("click", function switchHandler() {
                 switchImage.src = "switch_off.png";
-                switchSound.volume = 0.3;
+                switchSound.volume = 0.2;
                 switchSound.play().catch(error => console.error("Audio Error:", error));
                 
-                ambientSound.volume = 0.3;
+                ambientSound.volume = 0.5;
                 setTimeout(() => {
                     ambientSound.play().catch(error => console.error("Ambient Audio Error:", error));
-                }, 500); 
+                }, 500);
 
                 setTimeout(() => {
                     switchImage.style.opacity = "0";
@@ -431,6 +400,7 @@
                         maskLayer.style.opacity = "1";
                         treeLayerLeft.style.opacity = "1";
                         treeLayerRight.style.opacity = "1";
+                        flagLayer.style.opacity = "1";
                         imageContainer.style.opacity = "1";
                         overlayImage.style.opacity = "1";
                         setTimeout(() => {
@@ -440,6 +410,9 @@
                                 hammerImage.style.opacity = "1";
                                 document.body.style.pointerEvents = "none";
                                 hammerImage.style.pointerEvents = "auto";
+                                setTimeout(() => {
+                                    hammerImage.style.animation = "bling 2s infinite";
+                                }, 3000);
                             }, 3000);
                         }, 2000);
                     }, 1000);
@@ -455,13 +428,17 @@
                     
                     setTimeout(() => {
                         hammerImage.style.display = "none";
-                        hammerImage.style.pointerEvents = "none"; 
-                        overlayImage.style.pointerEvents = "auto"; 
-                        document.body.style.pointerEvents = "none"; 
+                        hammerImage.style.pointerEvents = "none";
+                        overlayImage.style.pointerEvents = "auto";
+                        document.body.style.pointerEvents = "none";
                         
                         animationFrame.src = "drept.png";
                         imageContainer.style.opacity = "1";
                         
+                        setTimeout(() => {
+                            overlayImage.style.animation = "stoneGlow 2s infinite";
+                        }, 3000);
+
                         setTimeout(() => {
                             playIdleAnimation();
                         }, 2000);
@@ -483,6 +460,7 @@
                 document.getElementById("animationFrame").src = idleFrames[idleIndex];
                 if (idleFrames[idleIndex] === "wink.png" && idleIndex === 2) {
                     winkSound.play().catch(error => console.error("Audio Error:", error));
+                    winkSound.volume = 0.2;
                 }
 
                 idleTimeout = setTimeout(() => {
@@ -508,8 +486,8 @@
             const mask2Layer = document.getElementById("mask2Layer");
             const treeLayerLeft = document.getElementById("treeLayerLeft");
             const treeLayerRight = document.getElementById("treeLayerRight");
+            const flagLayer = document.getElementById("flagLayer");
             const maskLayer = document.getElementById("maskLayer");
-            const newScene = document.getElementById("newScene");
             const blackFade = document.getElementById("blackFade");
 
             frame.src = "stanga.png";
@@ -519,95 +497,53 @@
 
             clickCount++;
             if (clickCount === 1) {
-                hit1Sound.volume = 0.5;
+                overlayImage.style.animation = "none";
+                hit1Sound.volume = 0.3;
                 hit1Sound.play().catch(error => console.error("Hit1 Audio Error:", error));
                 overlayImage.src = "piatra1.png";
             } else if (clickCount === 2) {
-                hit2Sound.volume = 0.5;
+                hit2Sound.volume = 0.3;
                 hit2Sound.play().catch(error => console.error("Hit2 Audio Error:", error));
                 overlayImage.src = "piatra2.png";
             } else if (clickCount === 3) {
-                hit3Sound.volume = 0.5;
+                hit3Sound.volume = 0.3;
                 hit3Sound.play().catch(error => console.error("Hit3 Audio Error:", error));
                 overlayImage.style.opacity = "0";
                 overlayImage.style.pointerEvents = "none";
 
-                gifImage.src = ""; 
-                gifImage.src = "outputfinal-unscreen.gif"; 
-                gifContainer.style.opacity = "1"; 
+                gifImage.src = "";
+                gifImage.src = "outputfinal-unscreen.gif";
+                gifContainer.style.opacity = "1";
 
-                // wait for GIF to finish (2 seconds), then start fade-out
                 setTimeout(() => {
-                    frame.style.transition = "opacity 1s ease-in-out"; 
-                    gifContainer.style.transition = "opacity 1s ease-in-out"; 
-                    frame.style.opacity = "0"; 
-                    gifContainer.style.opacity = "0"; 
+                    frame.style.transition = "opacity 1s ease-in-out";
+                    gifContainer.style.transition = "opacity 1s ease-in-out";
+                    frame.style.opacity = "0";
+                    gifContainer.style.opacity = "0";
 
-                    // wait for fade-out to complete (1s), then play car sound and handle animation
                     setTimeout(() => {
-                        carSound.volume = 0.5;
+                        carSound.volume = 0.4;
                         carSound.play().catch(error => console.error("Car Audio Error:", error));
 
-
                         setTimeout(() => {
-                            mask2Layer.style.opacity = "1"; // show mask for road foreground
+                            mask2Layer.style.opacity = "1";
                             carImage.style.opacity = "1";
-                            carText.style.opacity = "1";
-                            
-                            // animate car to fully exit the frame
-                            carImage.style.animation = "drive 5s linear forwards"; 
-                            carText.style.animation = "followCar 5s ease-out forwards"; 
+                            carImage.style.animation = "drive 5s linear forwards";
 
-                            // after car fully exits (5s), trigger text idle animation
+                            // Fade in text after car animation completes
                             setTimeout(() => {
-                                carText.style.animation = "textIdle 1.5s ease-in-out infinite";
-
-                                // after idle animation (1.5s), fade to black and transition to new scene
+                                carText.style.opacity = "1";
+                                
                                 setTimeout(() => {
-                                    document.body.style.transition = "opacity 1s ease-in-out";
-                                    document.body.style.opacity = "0";
-                                    carText.style.opacity = "0";
-                                    maskLayer.style.opacity = "0";
-                                    treeLayerLeft.style.opacity = "0";
-                                    treeLayerRight.style.opacity = "0";
-                                    imageContainer.style.opacity = "0";
-                                    gifContainer.style.opacity = "0";
-                                    hammerImage.style.opacity = "0";
-                                    carImage.style.opacity = "0";
-                                    mask2Layer.style.opacity = "0";
-                                    
-                                    // fade to black
                                     blackFade.style.opacity = "1";
-                                    
-                                    
                                     setTimeout(() => {
-                                    
-                                        maskLayer.style.display = "none";
-                                        treeLayerLeft.style.display = "none";
-                                        treeLayerRight.style.display = "none";
-                                        imageContainer.style.display = "none";
-                                        gifContainer.style.display = "none";
-                                        hammerImage.style.display = "none";
-                                        carImage.style.display = "none";
-                                        mask2Layer.style.display = "none";
-                                        carText.style.display = "none";
-                                        document.body.style.background = "none";
-                                        
-                                        // fade in new scene
-                                        newScene.style.opacity = "1";
-                                        
-                                        // fade out black overlay
-                                        setTimeout(() => {
-                                            blackFade.style.opacity = "0";
-                                        }, 500);
-                                        
-                                    }, 1000); // 1s for black fade
-                                    
-                                }, 1500); // 1.5s for textIdle animation
-                            }, 5000); // 5s for car to exit
-                        }, 6000); // 6s delay after car sound starts
-                    }, 1000); // 1s fade-out duration
-                }, 2000); // 2s GIF duration
+                                        window.location.href = "side2.html";
+                                    }, 1000);
+                                }, 1500);
+                            }, 5000); // Matches car's 5s drive animation
+                        }, 6000);
+                    }, 1000);
+                }, 2000);
 
                 clickCount = 0;
             }

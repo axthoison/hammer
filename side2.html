@@ -25,7 +25,9 @@
             font-family: "Inter", "DM Sans", Arial, sans-serif;
             color: #fff;
             overflow-x: hidden;
-            overflow-y: hidden; /* Start with hidden overflow to prevent scrolling during intro */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            overflow-y: hidden;
         }
 
         .stars-container {
@@ -45,28 +47,58 @@
             background: white;
             border-radius: 50%;
             animation: twinkle var(--twinkle-duration) infinite;
+            width: 3px;
+            height: 3px;
             opacity: 0.5;
         }
 
         .shooting-star {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 
+                       0 0 0 6px rgba(255,255,255,0.1), 
+                       0 0 15px rgba(255,255,255,0.3);
             animation: shoot var(--shoot-duration) linear infinite;
-            transform: rotate(-45deg);
-            box-shadow: 0 0 12px rgba(255, 255, 255, 1);
             pointer-events: none;
         }
 
+        .shooting-star::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+            filter: blur(1px);
+        }
+
         @keyframes twinkle {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
+            0%, 100% { 
+                opacity: 0.8; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.3);
+            }
         }
 
         @keyframes shoot {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(-45deg); opacity: 1; }
-            100% { transform: translateX(var(--trail-length)) translateY(var(--trail-length)) rotate(-45deg); opacity: 0; }
+            0% {
+                transform: rotate(315deg) translateX(0);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(315deg) translateX(-800px);
+                opacity: 0;
+            }
         }
 
         .content {
@@ -158,7 +190,6 @@
             position: relative;
         }
 
-        /* White glowing divider with left-to-right animation */
         .team-divider {
             position: absolute;
             bottom: -50px;
@@ -280,7 +311,6 @@
             margin-bottom: 20px;
         }
 
-        /* Special styling for the trio section */
         .team-member.trio {
             flex-direction: column;
             text-align: center;
@@ -310,12 +340,15 @@
             max-width: 900px;
             margin-top: 30px;
         }
-
-
-
     </style>
 </head>
 <body>
+    <!-- Background Sound -->
+    <audio id="background-audio" autoplay loop>
+        <source src="background-sound.mp3" type="audio">
+  
+    </audio>
+
     <div class="stars-container"></div>
     <div class="content">
         <h1 class="title main">DE CE EXIST?</h1>
@@ -363,7 +396,7 @@
                 <div class="description">Unul dă intensitate, celălalt adâncime. Împreună, sunt prezența sonoră care susțin povestea cu emoția pe care cuvintele nu o pot reda.</div>
             </div>
             
-            <img class="trio-image" src="3members.JPG"  alt="Sandu and Mircea">
+            <img class="trio-image" src="3members.JPG" alt="Sandu and Mircea">
             <div class="team-divider"></div>
         </div>
 
@@ -409,6 +442,14 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.body.style.opacity = "1";
+
+            // Control background audio volume
+            const audio = document.getElementById("background-audio");
+            audio.volume = 0.5; // Set to a low volume (20%)
+        });
+
         const starsContainer = document.querySelector('.stars-container');
         const teamContainer = document.querySelector('.team-container');
         const scrollIndicator = document.querySelector('.scroll-indicator');
@@ -419,7 +460,7 @@
             star.className = 'star';
             star.style.left = `${Math.random() * 100}%`;
             star.style.top = `${Math.random() * 100}%`;
-            star.style.width = `${Math.random() * 1.5 + 0.5}px`;
+            star.style.width = `${Math.random() * 4 + 1}px`;
             star.style.height = star.style.width;
             star.style.setProperty('--twinkle-duration', `${Math.random() * 4 + 2}s`);
             starsContainer.appendChild(star);
@@ -429,22 +470,25 @@
         function createShootingStar() {
             const star = document.createElement('div');
             star.className = 'shooting-star';
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.setProperty('--shoot-duration', `${Math.random() * 2 + 1}s`);
-            star.style.setProperty('--trail-length', `${Math.random() * 200 + 100}px`);
+            star.style.left = `${Math.random() * 80}%`;
+            star.style.top = `${Math.random() * 40}%`;
+            const duration = Math.random() * 4 + 4;
+            star.style.setProperty('--shoot-duration', `${duration}s`);
             starsContainer.appendChild(star);
-            setTimeout(() => star.remove(), parseFloat(star.style.getPropertyValue('--shoot-duration')) * 1000);
+            
+            setTimeout(() => {
+                star.remove();
+            }, duration * 1000);
         }
-        setInterval(createShootingStar, 200);
 
-        // Show team container and enable scrolling after all intro text is visible
+        setInterval(createShootingStar, 2000);
+
+        // Show team container and enable scrolling after intro
         setTimeout(() => {
             teamContainer.classList.add('visible');
             document.body.style.overflowY = 'auto';
             scrollIndicator.classList.add('visible');
             
-            // Start showing team members as they come into view
             const teamMembers = document.querySelectorAll('.team-member');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -462,16 +506,14 @@
                 observer.observe(member);
             });
 
-            // Hide scroll indicator when scrolling starts
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 100) {
                     scrollIndicator.classList.remove('visible');
                 }
             }, { once: true });
 
-            // Smooth auto-scroll
             let startTime = null;
-            const duration = 30000; // 30 seconds total scroll time
+            const duration = 30000;
             const startPosition = window.pageYOffset;
             const documentHeight = document.body.scrollHeight;
             const windowHeight = window.innerHeight;
@@ -490,8 +532,7 @@
             }
             
             window.requestAnimationFrame(autoScroll);
-
-        }, 7000); // Wait for all intro text to appear (6s animation + 1s buffer)
+        }, 7000);
     </script>
 </body>
 </html>
