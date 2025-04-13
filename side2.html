@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meet the Team</title>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap");
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
             --bg: #064358;
@@ -22,12 +22,10 @@
             margin: 0;
             padding: 0;
             background-color: var(--bg);
-            font-family: "Inter", "DM Sans", Arial, sans-serif;
+            font-family: "Libre Baskerville", serif;
             color: #fff;
             overflow-x: hidden;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            overflow-y: hidden;
+            opacity: 1;
         }
 
         .stars-container {
@@ -58,9 +56,9 @@
             height: 3px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 
-                       0 0 0 6px rgba(255,255,255,0.1), 
-                       0 0 15px rgba(255,255,255,0.3);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.2),
+                        0 0 0 6px rgba(255,255,255,0.1),
+                        0 0 15px rgba(255,255,255,0.3);
             animation: shoot var(--shoot-duration) linear infinite;
             pointer-events: none;
         }
@@ -77,96 +75,94 @@
         }
 
         @keyframes twinkle {
-            0%, 100% { 
-                opacity: 0.8; 
-                transform: scale(1);
-            }
-            50% { 
-                opacity: 1;
-                transform: scale(1.3);
-            }
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
         }
 
         @keyframes shoot {
-            0% {
-                transform: rotate(315deg) translateX(0);
-                opacity: 1;
-            }
-            70% {
-                opacity: 1;
-            }
-            100% {
-                transform: rotate(315deg) translateX(-800px);
-                opacity: 0;
-            }
+            0% { transform: rotate(315deg) translateX(0); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: rotate(315deg) translateX(-800px); opacity: 0; }
         }
 
         .content {
             text-align: center;
-            position: relative;
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 2;
-            width: 80%;
-            max-width: 1200px;
-            margin: 50px auto 0;
-            padding-top: 20vh;
-        }
-
-        .title {
-            font-weight: 800;
-            letter-spacing: var(--ls);
-            color: white;
+            width: 65%;
             margin: 0;
-            opacity: 0;
-        }
-
-        .title.main {
-            font-size: var(--fs);
-            -webkit-animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) both;
-            animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) both;
-        }
-
-        .title.sub {
-            font-size: clamp(2rem, 6vw, 5rem);
-            -webkit-animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) 1s both;
-            animation: focus-in-expand-fwd 2s cubic-bezier(.25,.46,.45,.94) 1s both;
-        }
-
-        @-webkit-keyframes focus-in-expand-fwd {
-            0% { letter-spacing: -.5em; -webkit-transform: translateZ(-800px); transform: translateZ(-800px); -webkit-filter: blur(12px); filter: blur(12px); opacity: 0; }
-            100% { -webkit-transform: translateZ(0); transform: translateZ(0); -webkit-filter: blur(0); filter: blur(0); opacity: 1; }
-        }
-        @keyframes focus-in-expand-fwd {
-            0% { letter-spacing: -.5em; -webkit-transform: translateZ(-800px); transform: translateZ(-800px); -webkit-filter: blur(12px); filter: blur(12px); opacity: 0; }
-            100% { -webkit-transform: translateZ(0); transform: translateZ(0); -webkit-filter: blur(0); filter: blur(0); opacity: 1; }
         }
 
         .intro-text {
-            font-size: 1.2em;
+            font-size: clamp(1.5rem, 3vw, 3rem);
+            font-weight: 700;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            opacity: 1;
+            display: block;
+            
+        }
+
+        .intro-text p {
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            text-align: center;
+        }
+
+        #intro1 {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        #intro1 p:not(:last-child) {
+            margin-bottom: 0.5rem;
+        }
+
+        #intro2 {
+            margin-top: 3rem;
+        }
+
+        #intro3 {
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none;
+            width: 100%;
+            margin: 30px auto 0;
+        }
+
+        #intro4 {
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none;
+            width: 100%;
+            margin: 2rem auto 0;
+        }
+
+        .intro-text span {
             opacity: 0;
-            margin-top: 20px;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+            display: inline-block;
         }
 
-        .intro-text:nth-child(3) {
-            animation: fadeInSlow 2s ease-in 2s both;
-        }
-        .intro-text:nth-child(4) {
-            animation: fadeInSlow 2s ease-in 4s both;
-        }
-        .intro-text:nth-child(5) {
-            animation: fadeInSlow 2s ease-in 6s both;
-        }
-
-        @keyframes fadeInSlow {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .intro-text span.visible {
+            opacity: 1;
+            transform: translateY(0);
+            text-shadow: -2px 0 6px rgba(255, 255, 255, 0.9);
         }
 
         .team-container {
             position: relative;
             z-index: 2;
-            padding: 100px 20px;
-            width: 100%;
-            max-width: 1400px;
+            padding: 50vh 2vw 5% 2vw;
+            width: 80%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -196,16 +192,39 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.8) 20%, 
-                rgba(255, 255, 255, 1) 50%, 
-                rgba(255, 255, 255, 0.8) 80%, 
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.8) 20%,
+                rgba(255, 255, 255, 1) 50%,
+                rgba(255, 255, 255, 0.8) 80%,
                 transparent 100%);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
             opacity: 0;
             transform: scaleX(0);
             transform-origin: left center;
+        }
+
+        .team-divider.intro-divider {
+            position: relative;
+            bottom: auto;
+            display: block;
+            width: var(--intro-divider-width, 60%);
+            height: var(--intro-divider-height, 0.125rem);
+            margin: 2% auto;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.8) 20%,
+                rgba(255, 255, 255, 1) 50%,
+                rgba(255, 255, 255, 0.8) 80%,
+                transparent 100%
+            );
+            box-shadow: 0 0 0.9375rem rgba(255, 255, 255, 0.8);
+            opacity: 0;
+        }
+
+        .team-divider.intro-divider.visible {
+            animation: dividerReveal 1.2s forwards;
         }
 
         .team-member.visible {
@@ -218,14 +237,8 @@
         }
 
         @keyframes dividerReveal {
-            0% { 
-                opacity: 0;
-                transform: scaleX(0);
-            }
-            100% { 
-                opacity: 1;
-                transform: scaleX(1);
-            }
+            0% { opacity: 0; transform: scaleX(0); }
+            100% { opacity: 1; transform: scaleX(1); }
         }
 
         .team-member.left {
@@ -247,15 +260,24 @@
         }
 
         .team-member img {
-            width: 300px;
             height: auto;
             object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            border-radius: 0.5rem;
+            box-shadow: 0 0 1rem rgba(255, 255, 255, 0.3);
             opacity: 0;
             transform: scale(0.8);
             transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
         }
+
+        .img-dragos { width: 20rem; }
+        .img-sergiu-actor { width: 33rem; }
+        .img-nicoleta { width: 22rem; }
+        .img-vladislav { width: 33rem; }
+        .img-sandu { width: 18rem; }
+        .img-sergiu-trio { width: 18rem; }
+        .img-mircea { width: 13.5rem; }
+        .img-trio-group { width: 10rem; }
+        .img-nadejda { width: 33rem; }
 
         .team-member.visible img {
             opacity: 1;
@@ -277,6 +299,10 @@
             transition: all 0.6s ease-out;
         }
 
+        .name {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
         .team-member.visible .name,
         .team-member.visible .role,
         .team-member.visible .description {
@@ -284,31 +310,28 @@
             transform: translateY(0);
         }
 
-        .team-member.visible .name {
-            transition-delay: 0.3s;
-        }
-        .team-member.visible .role {
-            transition-delay: 0.5s;
-        }
-        .team-member.visible .description {
-            transition-delay: 0.7s;
-        }
+        .team-member.visible .name { transition-delay: 0.3s; }
+        .team-member.visible .role { transition-delay: 0.5s; }
+        .team-member.visible .description { transition-delay: 0.7s; }
 
         .name {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
         }
+
         .role {
-            font-size: 1.2em;
-            font-weight: bold;
+            font-size: 1.5em;
+            font-weight: 700;
             color: #d3d3d3;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
+
         .description {
-            font-size: 1em;
+            font-size: 1.5em;
+            font-weight: 400;
             line-height: 1.5;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .team-member.trio {
@@ -327,104 +350,172 @@
 
         .trio-member {
             flex: 0 1 30%;
-            padding: 0 15px;
+            padding: 0 50px;
         }
 
         .trio-description {
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+            margin-top: 40px;
         }
 
         .trio-image {
-            width: 100%;
-            max-width: 900px;
+            width: 40rem;
             margin-top: 30px;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-indicator.visible {
+            opacity: 1;
+        }
+
+        .logos-section {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to bottom,
+                rgba(6, 67, 88, 0.1) 0%, /* Blends with --bg */
+                rgba(120, 190, 230, 0.5) 40%, /* Brighter light blue, not whitish */
+                rgba(120, 190, 230, 0.5) 60%, /* Maintains light blue */
+                rgba(6, 67, 88, 0.1) 100% /* Blends with --bg */
+            );
+            padding: 4rem 0;
+            margin: 0;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 12rem;
+        }
+
+        .logos-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 80%;
+            margin: 0 auto;
+            opacity: 0;
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .logos-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .logo {
+            height: auto;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out 0.3s, transform 1s ease-out 0.3s;
+        }
+
+        .logo.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .logo-1 { width: 7rem; }
+        .logo-2 { width: 5rem; }
+        .logo-3 { width: 7rem; }
+        .logo-4 { width: 11rem; }
+        .logo-5 { width: 6rem; }
+        .logo-6 { width: 7rem; }
+        .logo-7 { width: 5rem; }
+        .logo-8 { width: 8rem; }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 7rem;
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            font-weight: 400;
+            color: #fff;
+            z-index: 2;
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+        }
+
+        .contact-email {
+            color: var(--clr-4);
+            text-decoration: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .contact-email:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
 <body>
-    <!-- Background Sound -->
+    <link rel="preload" href="dragos.JPEG" as="image">
+    
     <audio id="background-audio" autoplay loop>
-        <source src="background-sound.mp3" type="audio">
-  
+        <source src="background-sound.mp3" type="audio/mpeg">
     </audio>
 
     <div class="stars-container"></div>
     <div class="content">
-        <h1 class="title main">DE CE EXIST?</h1>
-        <h1 class="title sub">Sunt Project UM</h1>
-        <p class="intro-text">O companie de producție de film creativ</p>
-        <p class="intro-text">Exist ca să spun povești pe care alții nu îndrăznesc să le spună.</p>
-        <p class="intro-text">Și dacă ai ajuns până aici, înseamnă că și tu ești parte din povestea mea.</p>
+        <div class="intro-text" id="intro1">
+            <p>Sunt Project UM o companie producătoare de film creativ.</p>
+            <p>Exist ca să spun povești pe care alții nu îndrăznesc să le spună.</p>
+            <p>Îmi cresc rădăcinile din istoriile care nu promit nimic ușor, dar dăruiesc ceva adevărat.</p>
+            <div class="team-divider intro-divider"></div>
+        </div>
+
+        <div class="intro-text" id="intro2">
+            <p>Sunt vocea lor comună. Eu exist prin ei.</p>
+        </div>
     </div>
     <div class="team-container">
-        <!-- Dragoș Turea -->
         <div class="team-member left">
-            <img src="dragos.JPEG" alt="Dragoș Turea" class="member-image">
+            <img src="dragos.JPEG" alt="Dragoș Turea" class="member-image img-dragos">
             <div class="text-content">
                 <div class="name">Dragoș Turea</div>
                 <div class="role">Regizor, scenarist, producător</div>
-                <div class="description">M-am născut din ideile și viziunea lui. Port în mine amprenta universului său creativ care nu se repetă, nu se explică — doar se simte.</div>
+                <div class="description">M-am născut din ideile și viziunea lui. Port în mine amprenta universului său creativ care nu se repetă, nu se explică, doar se simte.</div>
             </div>
             <div class="team-divider"></div>
         </div>
 
-        <!-- Sergiu Voloc -->
         <div class="team-member right-only">
+            <img src="Sergiu_Voloc_single.jpg" alt="Sergiu Voloc" class="member-image img-sergiu-actor">
             <div class="text-content">
                 <div class="name">Sergiu Voloc</div>
-                <div class="role">Actor, compozitor</div>
+                <div class="role">Actor</div>
                 <div class="description">Cel vine din univers și îmbracă umanul ca pe un destin ales.</div>
             </div>
             <div class="team-divider"></div>
         </div>
 
-        <!-- Sandu and Mircea Section -->
-        <div class="team-member trio">
-            <div class="trio-members">
-                <div class="trio-member">
-                    <div class="name">Sandu Bublițchi</div>
-                    <div class="role">Interpret vioară</div>
-                </div>
-                <div class="trio-member">
-                    <div class="name">Mircea - Adrian Flautistu</div>
-                    <div class="role">Interpret contrabas</div>
-                </div>
-            </div>
-            
-            <div class="trio-description">
-                <div class="description">Unul dă intensitate, celălalt adâncime. Împreună, sunt prezența sonoră care susțin povestea cu emoția pe care cuvintele nu o pot reda.</div>
-            </div>
-            
-            <img class="trio-image" src="3members.JPG" alt="Sandu and Mircea">
-            <div class="team-divider"></div>
-        </div>
-
-        <!-- Nadejda Voloc -->
         <div class="team-member left">
-            <img src="nadejda.JPG" alt="Nadejda Voloc" class="member-image">
-            <div class="text-content">
-                <div class="name">Nadejda Voloc</div>
-                <div class="role">Actriță</div>
-                <div class="description">Prin ea emoția prinde rădăcini.</div>
-            </div>
-            <div class="team-divider"></div>
-        </div>
-
-        <!-- Nicoleta Cocoță -->
-        <div class="team-member right">
-            <img src="nicoleta.PNG" alt="Nicoleta Cocoță" class="member-image">
+            <img src="Nicoleta_Cocoță.PNG" alt="Nicoleta Cocoță" class="member-image img-nicoleta">
             <div class="text-content">
                 <div class="name">Nicoleta Cocoță</div>
-                <div class="role">Director de producție</div>
+                <div class="role">Director producție</div>
                 <div class="description">Este cea care ține echilibrul între idee și realitate. Face tot ce nu se vede, dar se simte când lipsește.</div>
             </div>
             <div class="team-divider"></div>
         </div>
 
-        <!-- Vladislav Hîncu -->
-        <div class="team-member left">
-            <img src="vladislav.jpg" alt="Vladislav Hîncu" class="member-image">
+        <div class="team-member right-only">
+            <img src="Vladislav_Hîncu.JPG" alt="Vladislav Hîncu" class="member-image img-vladislav">
             <div class="text-content">
                 <div class="name">Vladislav Hîncu</div>
                 <div class="role">Director de imagine</div>
@@ -432,107 +523,214 @@
             </div>
             <div class="team-divider"></div>
         </div>
+
+        <div class="team-member left">
+            <img src="Nadejda_Voloc.JPG" alt="Nadejda Voloc" class="member-image img-nadejda">
+            <div class="text-content">
+                <div class="name">Nadejda Voloc</div>
+                <div class="role">Actriță</div>
+                <div class="description">Prin ea emoția prinde rădăcinile.</div>
+            </div>
+            <div class="team-divider"></div>
+        </div>
+
+        <div class="team-member trio">
+            <div class="trio-members">
+                <div class="trio-member">
+                    <img src="Alexandru_Bublițchi.JPG" class="member-image img-sandu">
+                    <div class="name">Sandu Bublițchi</div>
+                    <div class="role">Interpret vioară</div>
+                    <div class="description">Este arcușul care dă intensitate emoțiilor.</div>
+                </div>
+                <div class="trio-member">
+                    <img src="Sergiu_Voloc.JPG" class="member-image img-sergiu-trio">
+                    <div class="name">Sergiu Voloc</div>
+                    <div class="role">Compozitor, Voce, Interpret acordeon</div>
+                    <div class="description">Muzica lui se naște între lumi, acolo unde sensibilitatea și forța dau formă a ceea ce nu poate fi încadrat în tipare.</div>
+                </div>
+                <div class="trio-member">
+                    <img src="Mircea_Adrian_Flautistu.JPG" class="member-image img-mircea">
+                    <div class="name">Mircea - Adrian Flautistu</div>
+                    <div class="role">Interpret contrabas</div>
+                    <div class="description">Este adâncimea care pulsează în fundal.</div>
+                </div>
+            </div>
+            <div class="trio-description">
+                <div class="description" style="font-size: 2rem;">Împreună sunt prezența sonoră, care susține povestea cu intensitatea pe care cuvintele nu o pot reda.</div>
+            </div>
+            <img class="trio-image" src="3members.JPG" alt="trio picture">
+            <div class="team-divider"></div>
+        </div>
+
+        <div class="intro-text" id="intro3">
+            <p>Exist pentru că și ei au crezut în povestea mea.</p>
+        </div>
+
+        <section class="logos-section">
+            <div class="logos-container">
+                <img src="logo1.png" alt="Logo 1" class="logo logo-1">
+                <img src="logo2.png" alt="Logo 2" class="logo logo-2">
+                <img src="logo3.png" alt="Logo 3" class="logo logo-3">
+                <img src="logo4.webp" alt="Logo 4" class="logo logo-4">
+                <img src="logo5.png" alt="Logo 5" class="logo logo-5">
+                <img src="logo6.PNG" alt="Logo 6" class="logo logo-6">
+                <img src="logo7.png" alt="Logo 7" class="logo logo-7">
+                <img src="logo8.png" alt="Logo 8" class="logo logo-8">
+            </div>
+        </section>
+
+        <div class="intro-text" id="intro4">
+            <p>Și dacă ai ajuns până aici, înseamnă că și tu ești parte din povestea mea.</p>
+        </div>
+
+        <div class="contact-info">
+            <p><a href="mailto:contact@projectum.ro" class="contact-email">contact@projectum.ro</a></p>
+            <p class="contact-phone">+40755035034</p>
+        </div>
     </div>
 
     <div class="scroll-indicator">
-        <span>Scroll down</span>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <span>Glisează în jos</span>
+        <svg width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 5v14M19 12l-7 7-7-7"/>
         </svg>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            document.body.style.opacity = "1";
-
-            // Control background audio volume
             const audio = document.getElementById("background-audio");
-            audio.volume = 0.5; // Set to a low volume (20%)
-        });
+            audio.volume = 0.5;
 
-        const starsContainer = document.querySelector('.stars-container');
-        const teamContainer = document.querySelector('.team-container');
-        const scrollIndicator = document.querySelector('.scroll-indicator');
+            // Force audio playback
+            const playAudio = () => {
+                audio.play().catch(error => {
+                    console.error("Audio playback failed:", error);
+                });
+            };
+            playAudio();
 
-        // Static stars
-        for (let i = 0; i < 300; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.width = `${Math.random() * 4 + 1}px`;
-            star.style.height = star.style.width;
-            star.style.setProperty('--twinkle-duration', `${Math.random() * 4 + 2}s`);
-            starsContainer.appendChild(star);
-        }
+            const starsContainer = document.querySelector('.stars-container');
+            const teamContainer = document.querySelector('.team-container');
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            const intro1 = document.getElementById('intro1');
+            const intro2 = document.getElementById('intro2');
+            const intro3 = document.getElementById('intro3');
+            const intro4 = document.getElementById('intro4');
+            const introDivider = document.querySelector('.team-divider.intro-divider');
+            const logosSection = document.querySelector('.logos-section');
+            const logosContainer = document.querySelector('.logos-container');
+            const logos = document.querySelectorAll('.logo');
 
-        // Shooting stars
-        function createShootingStar() {
-            const star = document.createElement('div');
-            star.className = 'shooting-star';
-            star.style.left = `${Math.random() * 80}%`;
-            star.style.top = `${Math.random() * 40}%`;
-            const duration = Math.random() * 4 + 4;
-            star.style.setProperty('--shoot-duration', `${duration}s`);
-            starsContainer.appendChild(star);
-            
+            function wrapLetters(element) {
+                const paragraphs = element.querySelectorAll('p');
+                paragraphs.forEach(p => {
+                    const text = p.textContent;
+                    p.innerHTML = text.split(' ').map(word => `<span>${word}</span>`).join(' ');
+                });
+            }
+
+            wrapLetters(intro1);
+            wrapLetters(intro2);
+            wrapLetters(intro3);
+            wrapLetters(intro4);
+
+            function fadeInUp(element, delay, interval) {
+                const spans = element.querySelectorAll('span');
+                spans.forEach((span, index) => {
+                    setTimeout(() => {
+                        span.classList.add('visible');
+                    }, delay + (index * interval));
+                });
+                return delay + (spans.length * interval);
+            }
+
+            // Slow down intro animation
+            let totalDelay = 0;
+            totalDelay = fadeInUp(intro1, totalDelay, 100);
             setTimeout(() => {
-                star.remove();
-            }, duration * 1000);
-        }
+                introDivider.classList.add('visible');
+            }, totalDelay);
+            totalDelay = fadeInUp(intro2, totalDelay + 1000, 100);
 
-        setInterval(createShootingStar, 2000);
+            for (let i = 0; i < 300; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 4 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.setProperty('--twinkle-duration', `${Math.random() * 4 + 2}s`);
+                starsContainer.appendChild(star);
+            }
 
-        // Show team container and enable scrolling after intro
-        setTimeout(() => {
-            teamContainer.classList.add('visible');
-            document.body.style.overflowY = 'auto';
-            scrollIndicator.classList.add('visible');
-            
-            const teamMembers = document.querySelectorAll('.team-member');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+            function createShootingStar() {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.left = `${Math.random() * 80}%`;
+                star.style.top = `${Math.random() * 40}%`;
+                const duration = Math.random() * 4 + 4;
+                star.style.setProperty('--shoot-duration', `${duration}s`);
+                starsContainer.appendChild(star);
+                
+                setTimeout(() => {
+                    star.remove();
+                }, duration * 1000);
+            }
+
+            setInterval(createShootingStar, 2000);
+
+            setTimeout(() => {
+                teamContainer.classList.add('visible');
+                scrollIndicator.classList.add('visible');
+
+                const teamMembers = document.querySelectorAll('.team-member');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+
+                            if (entry.target === teamMembers[teamMembers.length - 1]) {
+                                totalDelay = fadeInUp(intro3, 0, 300);
+                                totalDelay = fadeInUp(intro4, totalDelay + 1000, 300);
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                teamMembers.forEach(member => {
+                    observer.observe(member);
+                });
+
+                const logoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            logosContainer.classList.add('visible');
+                            logos.forEach((logo, index) => {
+                                setTimeout(() => {
+                                    logo.classList.add('visible');
+                                }, index * 150);
+                            });
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -100px 0px'
+                });
+
+                logoObserver.observe(logosSection);
+
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 100) {
+                        scrollIndicator.classList.remove('visible');
                     }
                 });
-            }, { 
-                threshold: 0.3,
-                rootMargin: '0px 0px -100px 0px'
-            });
-
-            teamMembers.forEach(member => {
-                observer.observe(member);
-            });
-
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    scrollIndicator.classList.remove('visible');
-                }
-            }, { once: true });
-
-            let startTime = null;
-            const duration = 30000;
-            const startPosition = window.pageYOffset;
-            const documentHeight = document.body.scrollHeight;
-            const windowHeight = window.innerHeight;
-            const distance = documentHeight - windowHeight - startPosition;
-            
-            function autoScroll(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const progress = timestamp - startTime;
-                const percentage = Math.min(progress / duration, 1);
-                
-                window.scrollTo(0, startPosition + (distance * percentage));
-                
-                if (percentage < 1) {
-                    window.requestAnimationFrame(autoScroll);
-                }
-            }
-            
-            window.requestAnimationFrame(autoScroll);
-        }, 7000);
+            }, totalDelay + 1000);
+        });
     </script>
 </body>
 </html>
