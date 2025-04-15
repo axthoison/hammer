@@ -8,7 +8,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
-            --bg: #064358;
+            --bg: rgb(6, 67, 88);
             --clr-1: #1e3a8a;
             --clr-2: #2563eb;
             --clr-3: #3b82f6;
@@ -28,6 +28,53 @@
             opacity: 1;
         }
 
+        .language-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black; /* Matches website's background: #064358 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .language-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .language-buttons {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .language-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.5rem;
+            font-family: "Libre Baskerville", serif;
+            color: #fff; /* White text */
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.7); /* Softer white border */
+            border-radius: 1rem; /* Smoother corners for modern look */
+            cursor: pointer;
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+            text-transform: uppercase; /* Elegant, magical touch */
+            letter-spacing: 1px; /* Subtle spacing */
+        }
+
+        .language-button:hover {
+            color: #fff; /* Keep text white */
+            background: rgba(6, 67, 88, 0.2); /* Subtle teal tint matching --bg */
+            border-color: #fff; /* Brighten border */
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5), /* White glow */
+                        0 0 35px rgba(6, 67, 88, 0.4); /* Matching teal glow */
+            transform: translateY(-3px); /* Slight lift for magical effect */
+        }
         .stars-container {
             position: fixed;
             width: 100%;
@@ -38,6 +85,12 @@
             overflow: hidden;
             background: transparent;
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .stars-container.visible {
+            opacity: 1;
         }
 
         .star {
@@ -94,6 +147,12 @@
             z-index: 2;
             width: 65%;
             margin: 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .content.visible {
+            opacity: 1;
         }
 
         .intro-text {
@@ -102,9 +161,7 @@
             margin: 0;
             padding: 0;
             line-height: 1;
-            opacity: 1;
             display: block;
-            
         }
 
         .intro-text p {
@@ -155,7 +212,7 @@
         .intro-text span.visible {
             opacity: 1;
             transform: translateY(0);
-            text-shadow: -2px 0 6px rgba(255, 255, 255, 0.9);
+            text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
         }
 
         .team-container {
@@ -364,19 +421,6 @@
             margin-top: 30px;
         }
 
-        .scroll-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .scroll-indicator.visible {
-            opacity: 1;
-        }
 
         .logos-section {
             position: relative;
@@ -385,10 +429,10 @@
             transform: translateX(-50%);
             background: linear-gradient(
                 to bottom,
-                rgba(6, 67, 88, 0.1) 0%, /* Blends with --bg */
-                rgba(120, 190, 230, 0.5) 40%, /* Brighter light blue, not whitish */
-                rgba(120, 190, 230, 0.5) 60%, /* Maintains light blue */
-                rgba(6, 67, 88, 0.1) 100% /* Blends with --bg */
+                rgba(6, 67, 88, 0.1) 0%,
+                rgba(120, 190, 230, 0.5) 40%,
+                rgba(120, 190, 230, 0.5) 60%,
+                rgba(6, 67, 88, 0.1) 100%
             );
             padding: 4rem 0;
             margin: 0;
@@ -439,12 +483,18 @@
         .logo-8 { width: 8rem; }
 
         .contact-info {
-            text-align: center;
-            margin-top: 7rem;
-            font-size: clamp(1.2rem, 2.5vw, 2rem);
-            font-weight: 400;
-            color: #fff;
-            z-index: 2;
+        text-align: center;
+        margin-top: 7rem;
+        font-size: clamp(1.2rem, 2.5vw, 2rem);
+        font-weight: 400;
+        color: #fff;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 1s ease;
+        }
+
+        .contact-info.visible {
+            opacity: 1;
         }
 
         .contact-info p {
@@ -465,22 +515,33 @@
 </head>
 <body>
     <link rel="preload" href="dragos.JPEG" as="image">
-    
-    <audio id="background-audio" autoplay loop>
+
+    <div class="language-overlay">
+        <div class="language-buttons">
+            <button class="language-button" data-lang="en">English</button>
+            <button class="language-button" data-lang="ro">Română</button>
+        </div>
+    </div>
+
+    <audio id="background-audio" loop>
         <source src="background-sound.mp3" type="audio/mpeg">
     </audio>
 
     <div class="stars-container"></div>
     <div class="content">
         <div class="intro-text" id="intro1">
-            <p>Sunt Project UM o companie producătoare de film creativ.</p>
-            <p>Exist ca să spun povești pe care alții nu îndrăznesc să le spună.</p>
-            <p>Îmi cresc rădăcinile din istoriile care nu promit nimic ușor, dar dăruiesc ceva adevărat.</p>
+            <p data-lang="ro">Sunt Project UM o companie producătoare de film creativ.</p>
+            <p data-lang="en">I am Project UM, a creative film production company.</p>
+            <p data-lang="ro">Exist ca să spun povești pe care alții nu îndrăznesc să le spună.</p>
+            <p data-lang="en">I exist to tell stories that others dare not tell.</p>
+            <p data-lang="ro">Îmi cresc rădăcinile din istoriile care nu promit nimic ușor, dar dăruiesc ceva adevărat.</p>
+            <p data-lang="en">My roots grow from stories that promise nothing easy but offer something true.</p>
             <div class="team-divider intro-divider"></div>
         </div>
 
         <div class="intro-text" id="intro2">
-            <p>Sunt vocea lor comună. Eu exist prin ei.</p>
+            <p data-lang="ro">Sunt vocea lor comună. Eu exist prin ei.</p>
+            <p data-lang="en">I am their collective voice. I exist through them.</p>
         </div>
     </div>
     <div class="team-container">
@@ -488,8 +549,10 @@
             <img src="dragos.JPEG" alt="Dragoș Turea" class="member-image img-dragos">
             <div class="text-content">
                 <div class="name">Dragoș Turea</div>
-                <div class="role">Regizor, scenarist, producător</div>
-                <div class="description">M-am născut din ideile și viziunea lui. Port în mine amprenta universului său creativ care nu se repetă, nu se explică, doar se simte.</div>
+                <div class="role" data-lang="ro">Regizor, scenarist, producător</div>
+                <div class="role" data-lang="en">Director, screenwriter, producer</div>
+                <div class="description" data-lang="ro">M-am născut din ideile și viziunea lui. Port în mine amprenta universului său creativ care nu se repetă, nu se explică, doar se simte.</div>
+                <div class="description" data-lang="en">I was born from his ideas and vision. I carry the imprint of his creative universe that does not repeat, does not explain, only feels.</div>
             </div>
             <div class="team-divider"></div>
         </div>
@@ -498,8 +561,10 @@
             <img src="Sergiu_Voloc_single.jpg" alt="Sergiu Voloc" class="member-image img-sergiu-actor">
             <div class="text-content">
                 <div class="name">Sergiu Voloc</div>
-                <div class="role">Actor</div>
-                <div class="description">Cel vine din univers și îmbracă umanul ca pe un destin ales.</div>
+                <div class="role" data-lang="ro">Actor</div>
+                <div class="role" data-lang="en">Actor</div>
+                <div class="description" data-lang="ro">Cel vine din univers și îmbracă umanul ca pe un destin ales.</div>
+                <div class="description" data-lang="en">The one who comes from the universe and embraces humanity as a chosen destiny.</div>
             </div>
             <div class="team-divider"></div>
         </div>
@@ -508,8 +573,10 @@
             <img src="Nicoleta_Cocoță.PNG" alt="Nicoleta Cocoță" class="member-image img-nicoleta">
             <div class="text-content">
                 <div class="name">Nicoleta Cocoță</div>
-                <div class="role">Director producție</div>
-                <div class="description">Este cea care ține echilibrul între idee și realitate. Face tot ce nu se vede, dar se simte când lipsește.</div>
+                <div class="role" data-lang="ro">Director producție</div>
+                <div class="role" data-lang="en">Production manager</div>
+                <div class="description" data-lang="ro">Este cea care ține echilibrul între idee și realitate. Face tot ce nu se vede, dar se simte când lipsește.</div>
+                <div class="description" data-lang="en">She is the one who balances idea and reality. She does everything unseen but felt when absent.</div>
             </div>
             <div class="team-divider"></div>
         </div>
@@ -518,8 +585,10 @@
             <img src="Vladislav_Hîncu.JPG" alt="Vladislav Hîncu" class="member-image img-vladislav">
             <div class="text-content">
                 <div class="name">Vladislav Hîncu</div>
-                <div class="role">Director de imagine</div>
-                <div class="description">Cel care dă formă și profunzime viziunii. Crează imaginea filmului cu ochiul unui pictor și precizia unui arhitect.</div>
+                <div class="role" data-lang="ro">Director de imagine</div>
+                <div class="role" data-lang="en">Cinematographer</div>
+                <div class="description" data-lang="ro">Cel care dă formă și profunzime viziunii. Crează imaginea filmului cu ochiul unui pictor și precizia unui arhitect.</div>
+                <div class="description" data-lang="en">The one who gives form and depth to the vision. He creates the film’s imagery with a painter’s eye and an architect’s precision.</div>
             </div>
             <div class="team-divider"></div>
         </div>
@@ -528,8 +597,10 @@
             <img src="Nadejda_Voloc.JPG" alt="Nadejda Voloc" class="member-image img-nadejda">
             <div class="text-content">
                 <div class="name">Nadejda Voloc</div>
-                <div class="role">Actriță</div>
-                <div class="description">Prin ea emoția prinde rădăcinile.</div>
+                <div class="role" data-lang="ro">Actriță</div>
+                <div class="role" data-lang="en">Actress</div>
+                <div class="description" data-lang="ro">Prin ea emoția prinde rădăcinile.</div>
+                <div class="description" data-lang="en">Through her, emotion takes root.</div>
             </div>
             <div class="team-divider"></div>
         </div>
@@ -539,31 +610,39 @@
                 <div class="trio-member">
                     <img src="Alexandru_Bublițchi.JPG" class="member-image img-sandu">
                     <div class="name">Sandu Bublițchi</div>
-                    <div class="role">Interpret vioară</div>
-                    <div class="description">Este arcușul care dă intensitate emoțiilor.</div>
+                    <div class="role" data-lang="ro">Interpret vioară</div>
+                    <div class="role" data-lang="en">Violinist</div>
+                    <div class="description" data-lang="ro">Este arcușul care dă intensitate emoțiilor.</div>
+                    <div class="description" data-lang="en">He is the bow that gives intensity to emotions.</div>
                 </div>
                 <div class="trio-member">
                     <img src="Sergiu_Voloc.JPG" class="member-image img-sergiu-trio">
                     <div class="name">Sergiu Voloc</div>
-                    <div class="role">Compozitor, Voce, Interpret acordeon</div>
-                    <div class="description">Muzica lui se naște între lumi, acolo unde sensibilitatea și forța dau formă a ceea ce nu poate fi încadrat în tipare.</div>
+                    <div class="role" data-lang="ro">Compozitor, Voce, Interpret acordeon</div>
+                    <div class="role" data-lang="en">Composer, vocalist, accordionist</div>
+                    <div class="description" data-lang="ro">Muzica lui se naște între lumi, acolo unde sensibilitatea și forța dau formă a ceea ce nu poate fi încadrat în tipare.</div>
+                    <div class="description" data-lang="en">His music is born between worlds, where sensitivity and strength shape what cannot be confined to patterns.</div>
                 </div>
                 <div class="trio-member">
                     <img src="Mircea_Adrian_Flautistu.JPG" class="member-image img-mircea">
                     <div class="name">Mircea - Adrian Flautistu</div>
-                    <div class="role">Interpret contrabas</div>
-                    <div class="description">Este adâncimea care pulsează în fundal.</div>
+                    <div class="role" data-lang="ro">Interpret contrabas</div>
+                    <div class="role" data-lang="en">Double bassist</div>
+                    <div class="description" data-lang="ro">Este adâncimea care pulsează în fundal.</div>
+                    <div class="description" data-lang="en">He is the depth that pulses in the background.</div>
                 </div>
             </div>
             <div class="trio-description">
-                <div class="description" style="font-size: 2rem;">Împreună sunt prezența sonoră, care susține povestea cu intensitatea pe care cuvintele nu o pot reda.</div>
+                <div class="description" style="font-size: 2rem;" data-lang="ro">Împreună sunt prezența sonoră, care susține povestea cu intensitatea pe care cuvintele nu o pot reda.</div>
+                <div class="description" style="font-size: 2rem;" data-lang="en">Together, they are the sonic presence that supports the story with an intensity words cannot convey.</div>
             </div>
             <img class="trio-image" src="3members.JPG" alt="trio picture">
             <div class="team-divider"></div>
         </div>
 
         <div class="intro-text" id="intro3">
-            <p>Exist pentru că și ei au crezut în povestea mea.</p>
+            <p data-lang="ro">Exist pentru că și ei au crezut în povestea mea.</p>
+            <p data-lang="en">I exist because they believed in my story too.</p>
         </div>
 
         <section class="logos-section">
@@ -580,7 +659,8 @@
         </section>
 
         <div class="intro-text" id="intro4">
-            <p>Și dacă ai ajuns până aici, înseamnă că și tu ești parte din povestea mea.</p>
+            <p data-lang="ro">Și dacă ai ajuns până aici, înseamnă că și tu ești parte din povestea mea.</p>
+            <p data-lang="en">And if you’ve made it this far, it means you’re part of my story too.</p>
         </div>
 
         <div class="contact-info">
@@ -589,27 +669,13 @@
         </div>
     </div>
 
-    <div class="scroll-indicator">
-        <span>Glisează în jos</span>
-        <svg width="1.2rem" height="1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14M19 12l-7 7-7-7"/>
-        </svg>
-    </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            const languageOverlay = document.querySelector('.language-overlay');
+            const languageButtons = document.querySelectorAll('.language-button');
             const audio = document.getElementById("background-audio");
-            audio.volume = 0.5;
-
-            // Force audio playback
-            const playAudio = () => {
-                audio.play().catch(error => {
-                    console.error("Audio playback failed:", error);
-                });
-            };
-            playAudio();
-
             const starsContainer = document.querySelector('.stars-container');
+            const content = document.querySelector('.content');
             const teamContainer = document.querySelector('.team-container');
             const scrollIndicator = document.querySelector('.scroll-indicator');
             const intro1 = document.getElementById('intro1');
@@ -621,21 +687,30 @@
             const logosContainer = document.querySelector('.logos-container');
             const logos = document.querySelectorAll('.logo');
 
-            function wrapLetters(element) {
-                const paragraphs = element.querySelectorAll('p');
+            audio.volume = 0.4;
+
+            function setLanguage(lang) {
+                // Hide all elements with data-lang attributes
+                document.querySelectorAll('[data-lang]').forEach(elem => {
+                    elem.style.display = 'none';
+                });
+
+                // Show only elements with the selected language
+                document.querySelectorAll(`[data-lang="${lang}"]`).forEach(elem => {
+                    elem.style.display = '';
+                });
+            }
+
+            function wrapLetters(element, lang) {
+                const paragraphs = element.querySelectorAll(`p[data-lang="${lang}"]`);
                 paragraphs.forEach(p => {
                     const text = p.textContent;
                     p.innerHTML = text.split(' ').map(word => `<span>${word}</span>`).join(' ');
                 });
             }
 
-            wrapLetters(intro1);
-            wrapLetters(intro2);
-            wrapLetters(intro3);
-            wrapLetters(intro4);
-
-            function fadeInUp(element, delay, interval) {
-                const spans = element.querySelectorAll('span');
+            function fadeInUp(element, delay, interval, lang) {
+                const spans = element.querySelectorAll(`p[data-lang="${lang}"] span`);
                 spans.forEach((span, index) => {
                     setTimeout(() => {
                         span.classList.add('visible');
@@ -644,14 +719,25 @@
                 return delay + (spans.length * interval);
             }
 
-            // Slow down intro animation
+            function initializeContent(lang) {
+            // Set language-specific text
+            setLanguage(lang);
+
+            // Wrap letters for animation
+            wrapLetters(intro1, lang);
+            wrapLetters(intro2, lang);
+            wrapLetters(intro3, lang);
+            wrapLetters(intro4, lang);
+
+            // Start animations
             let totalDelay = 0;
-            totalDelay = fadeInUp(intro1, totalDelay, 100);
+            totalDelay = fadeInUp(intro1, totalDelay, 350, lang);
             setTimeout(() => {
                 introDivider.classList.add('visible');
             }, totalDelay);
-            totalDelay = fadeInUp(intro2, totalDelay + 1000, 100);
+            totalDelay = fadeInUp(intro2, totalDelay + 1000, 350, lang);
 
+            // Stars
             for (let i = 0; i < 300; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -679,11 +765,19 @@
 
             setInterval(createShootingStar, 2000);
 
+            // Play audio
+            audio.play().catch(error => {
+                console.error("Audio playback failed:", error);
+            });
+
+            // Reveal content
+            starsContainer.classList.add('visible');
+            content.classList.add('visible');
             setTimeout(() => {
                 teamContainer.classList.add('visible');
-                scrollIndicator.classList.add('visible');
 
                 const teamMembers = document.querySelectorAll('.team-member');
+                const contactInfo = document.querySelector('.contact-info');
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
@@ -691,8 +785,11 @@
                             observer.unobserve(entry.target);
 
                             if (entry.target === teamMembers[teamMembers.length - 1]) {
-                                totalDelay = fadeInUp(intro3, 0, 300);
-                                totalDelay = fadeInUp(intro4, totalDelay + 1000, 300);
+                                totalDelay = fadeInUp(intro3, 0, 350, lang);
+                                totalDelay = fadeInUp(intro4, totalDelay + 1000, 350, lang);
+                                setTimeout(() => {
+                                    contactInfo.classList.add('visible');
+                                }, totalDelay);
                             }
                         }
                     });
@@ -723,13 +820,16 @@
                 });
 
                 logoObserver.observe(logosSection);
-
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 100) {
-                        scrollIndicator.classList.remove('visible');
-                    }
-                });
             }, totalDelay + 1000);
+        }
+
+            languageButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const lang = button.dataset.lang;
+                    languageOverlay.classList.add('hidden');
+                    initializeContent(lang);
+                });
+            });
         });
     </script>
 </body>
