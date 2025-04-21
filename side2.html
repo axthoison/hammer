@@ -40,7 +40,7 @@
             align-items: center;
             z-index: 1000;
             opacity: 1;
-            transition: opacity 2s ease;
+            transition: opacity 2.5s ease;
         }
 
         .language-overlay.hidden {
@@ -51,6 +51,10 @@
         .language-buttons {
             display: flex;
             gap: 2rem;
+        }
+
+        .language-buttons.hidden {
+            display: none;
         }
 
         .language-button {
@@ -85,11 +89,6 @@
             overflow: hidden;
             background: transparent;
             pointer-events: none;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .stars-container.visible {
             opacity: 1;
         }
 
@@ -147,11 +146,6 @@
             z-index: 2;
             width: 65%;
             margin: 0;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .content.visible {
             opacity: 1;
         }
 
@@ -163,7 +157,8 @@
             line-height: 1;
             display: block;
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transition: opacity 3s ease;
+            text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
         }
 
         .intro-text.visible {
@@ -183,11 +178,11 @@
         }
 
         #intro1 p:not(:last-child) {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
         }
 
         #intro2 {
-            margin-top: 3rem;
+            margin-top: 5rem; /* Adjust here to move intro2 up or down */
         }
 
         #intro3 {
@@ -198,7 +193,7 @@
             width: 100%;
             margin: 30px auto 0;
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transition: opacity 3s ease;
         }
 
         #intro3.visible {
@@ -213,20 +208,20 @@
             width: 100%;
             margin: 2rem auto 0;
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transition: opacity 3s ease;
         }
 
         #intro4.visible {
             opacity: 1;
         }
 
-        .team-divider.intro-divider {
+
+        .team-divider.middle-divider {
             position: relative;
-            bottom: auto;
             display: block;
             width: 60%;
             height: 0.125rem;
-            margin: 2% auto;
+            margin: 1rem auto;
             background: linear-gradient(
                 90deg,
                 transparent 0%,
@@ -237,11 +232,12 @@
             );
             box-shadow: 0 0 0.9375rem rgba(255, 255, 255, 0.8);
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transform: scaleX(0);
+            transform-origin: left center;
         }
 
-        .team-divider.intro-divider.visible {
-            opacity: 1;
+        .team-divider.middle-divider.visible {
+            animation: dividerReveal 1.2s forwards;
         }
 
         .team-container {
@@ -550,6 +546,8 @@
             <div class="team-divider intro-divider"></div>
         </div>
 
+        <div class="team-divider middle-divider"></div>
+
         <div class="intro-text" id="intro2">
             <p data-lang="ro">Sunt vocea lor comună. Eu exist prin ei.</p>
             <p data-lang="en">I am their collective voice. I exist through them.</p>
@@ -684,6 +682,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             const languageOverlay = document.querySelector('.language-overlay');
             const languageButtons = document.querySelectorAll('.language-button');
+            const languageButtonsContainer = document.querySelector('.language-buttons');
             const audio = document.getElementById("background-audio");
             const starsContainer = document.querySelector('.stars-container');
             const content = document.querySelector('.content');
@@ -693,6 +692,7 @@
             const intro3 = document.getElementById('intro3');
             const intro4 = document.getElementById('intro4');
             const introDivider = document.querySelector('.team-divider.intro-divider');
+            const middleDivider = document.querySelector('.team-divider.middle-divider');
             const logosSection = document.querySelector('.logos-section');
             const logosContainer = document.querySelector('.logos-container');
             const logos = document.querySelectorAll('.logo');
@@ -711,19 +711,25 @@
             function initializeContent(lang) {
                 setLanguage(lang);
 
-                // Start animations after language overlay fade-out
-                const overlayFadeDuration = 2000; // 2 seconds
+                // Instantly hide language buttons
+                languageButtonsContainer.classList.add('hidden');
+
+                // Fade out overlay to reveal scene
+                const overlayFadeDuration = 2500; // 2.5 seconds for overlay fade
+                languageOverlay.classList.add('hidden');
+
+                // Text and divider fade-in sequence
                 setTimeout(() => {
-                    starsContainer.classList.add('visible');
-                    content.classList.add('visible');
                     intro1.classList.add('visible');
-                }, overlayFadeDuration);
-                setTimeout(() => {
                     introDivider.classList.add('visible');
-                }, overlayFadeDuration + 1500);
+                }, overlayFadeDuration); // Start after overlay fade-out (2.5s)
+                setTimeout(() => {
+                    console.log('Middle divider should appear');
+                    middleDivider.classList.add('visible');
+                }, overlayFadeDuration + 3000); // Start after intro1 completes (5.5s)
                 setTimeout(() => {
                     intro2.classList.add('visible');
-                }, overlayFadeDuration + 3000);
+                }, overlayFadeDuration + 4200); // Start after divider completes (6.7s)
 
                 // Play audio
                 audio.play().catch(error => {
@@ -782,7 +788,7 @@
                     });
 
                     logoObserver.observe(logosSection);
-                }, overlayFadeDuration + 4000);
+                }, overlayFadeDuration + 6000);
                 
                 // Stars
                 for (let i = 0; i < 300; i++) {
@@ -816,7 +822,6 @@
             languageButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const lang = button.dataset.lang;
-                    languageOverlay.classList.add('hidden');
                     initializeContent(lang);
                 });
             });
