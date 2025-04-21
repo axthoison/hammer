@@ -9,6 +9,7 @@
             text-align: center;
             background: url('background.png') no-repeat center center fixed;
             background-size: cover;
+            background-color: #1a1a1a;
             height: 100vh;
             overflow: hidden;
             margin: 0;
@@ -109,15 +110,20 @@
             transition: opacity 1s ease-in-out;
         }
 
-        .image-container {
+        #main-container {
             position: fixed;
-            left: 45%;
-            top: 53.8%;
-            transform: translate(-50%, -50%);
-            width: 16vw;
+            width: 20vw;
+            height: 20vw;
             z-index: 4;
             opacity: 0;
             transition: opacity 1s ease-in-out;
+        }
+
+        .image-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 16vw;
         }
 
         #animationFrame {
@@ -126,25 +132,23 @@
         }
 
         #overlayImage {
-            position: fixed;
+            position: absolute;
             width: 15vw;
             height: auto;
-            bottom: 0.6vh;
-            right: -30%;
+            left: 34%;
+            top: 6%;
             cursor: pointer;
             user-select: none;
             z-index: 5;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            pointer-events: none;
         }
 
         .gif-container {
-            position: fixed;
+            position: absolute;
             width: 78vw;
             height: auto;
-            bottom: 3vh;
-            right: 11%;
+            left: 60%;
+            top: -42%;
+            transform: translateX(-50%);
             z-index: 6;
             opacity: 0;
             transition: opacity 1s ease-in-out;
@@ -156,14 +160,14 @@
         }
 
         #hammerImage {
-            position: fixed;
+            position: absolute;
             width: 4vw;
             height: auto;
-            bottom: 26vh;
-            left: 38vw;
+            left: 5%;
+            top: 84%;
             cursor: pointer;
             z-index: 5;
-            opacity: 1;
+            opacity: 0;
             transition: opacity 1s ease-in-out;
         }
 
@@ -171,10 +175,9 @@
             position: fixed;
             width: 38vw;
             height: auto;
-            bottom: 18vh;
-            right: -25vw;
+            right: 0vw;
             z-index: 7;
-            opacity: 1;
+            opacity: 0;
             transition: opacity 1s ease-in-out;
         }
 
@@ -183,19 +186,23 @@
             top: 65%;
             left: 50%;
             transform: translate(-50%, -50%);
+            z-index: 9;
+        }
+
+        #textLine1, #textLine2 {
+            display: block;
             color: white;
             font-size: 3vw;
             font-family: 'Times New Roman';
             font-weight: bold;
             text-transform: uppercase;
-            z-index: 9;
-            opacity: 0; /* Start hidden */
+            opacity: 0;
             transition: opacity 1s ease-in-out;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+            filter: drop-shadow(0 0 0.8vw rgba(255, 255, 255, 0.6));
         }
 
         @keyframes drive {
-            0% { right: -25vw; }
+            0% { right: -29vw; }
             100% { right: 125vw; }
         }
 
@@ -229,15 +236,6 @@
             z-index: 8;
             opacity: 0;
             transition: opacity 1s ease-in-out;
-        }
-
-        @media (max-width: 600px) {
-            .image-container { width: 20vw; }
-            #overlayImage { width: 50vw; bottom: 2vh; right: 25vw; }
-            #hammerImage { width: 12vw; bottom: 5vh; left: 5vw; }
-            .gif-container { width: 50vw; bottom: 2vh; right: 25vw; }
-            #carImage { width: 40vw; bottom: 5vh; }
-            #carText { font-size: 5vw; }
         }
 
         #switchOverlay {
@@ -274,6 +272,76 @@
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
+
+        @media (max-width: 600px) {
+            body {
+                background: url('mobile.jpg') no-repeat center center fixed;
+                background-size: cover;
+                background-color: #1a1a1a;
+            }
+
+            #maskLayer, #treeLayerLeft, #treeLayerRight, #flagLayer, #mask2Layer {
+                display: none;
+            }
+
+            #main-container {
+                width: 25vw;
+                height: 25vw;
+            }
+
+            .image-container {
+                width: 20vw;
+                left: 0;
+                top: 0;
+            }
+
+            #overlayImage {
+                width: 18vw;
+                left: 34%;
+                top: 6%;
+            }
+
+            #hammerImage {
+                width: 5vw;
+                left: 5%;
+                top: 84%;
+            }
+
+            .gif-container {
+                width: 60vw;
+                left: 60%;
+                top: -42%;
+                transform: translateX(-50%);
+            }
+
+            #carImage {
+                width: 40vw;
+                right: -29vw;
+            }
+
+            #textLine1, #textLine2 {
+                font-size: 5vw;
+            }
+
+            .star {
+                width: 0.5vw;
+                height: 0.5vw;
+            }
+
+            .shooting-star {
+                width: 0.5vw;
+                height: 0.5vw;
+                box-shadow: 0 0 0 0.5vw rgba(255,255,255,0.2), 
+                           0 0 0 1vw rgba(255,255,255,0.1), 
+                           0 0 2vw rgba(255,255,255,0.3);
+            }
+
+            .shooting-star::before {
+                width: 10vw;
+                height: 0.15vw;
+                filter: blur(0.15vw);
+            }
+        }
     </style>
 </head>
 <body>
@@ -282,27 +350,31 @@
         <audio id="switchSound" src="switch.mp3" preload="auto"></audio>
         <audio id="ambientSound" src="ambianta.mp3" preload="auto" loop></audio>
     </div>
-
     <div class="stars-container"></div>
     <img id="maskLayer" src="mask.png" alt="Mask Layer" loading="lazy">
     <img id="treeLayerLeft" src="copaclayerstanga.png" alt="Tree Layer Left" loading="lazy">
     <img id="treeLayerRight" src="copaclayerdreapta.png" alt="Tree Layer Right" loading="lazy">
     <img id="flagLayer" src="drapele.png" alt="Flag Layer" loading="lazy">
-    <div class="image-container">
-        <img id="animationFrame" src="standing.png" alt="Animation Frame">
-        <img id="overlayImage" src="piatra.png" alt="Overlay Image">
-        <audio id="winkSound" src="wink.mp3" preload="auto"></audio>
-        <audio id="breakSound" src="stone-break.mp3" preload="auto"></audio>
-        <audio id="hit1Sound" src="hit1.wav" preload="auto"></audio>
-        <audio id="hit2Sound" src="hit2.wav" preload="auto"></audio>
-        <audio id="hit3Sound" src="hit3.mp3" preload="auto"></audio>
+    <div id="main-container">
+        <div class="image-container">
+            <img id="animationFrame" src="standing.png" alt="Animation Frame">
+            <img id="overlayImage" src="piatra.png" alt="Overlay Image">
+            <audio id="winkSound" src="wink.mp3" preload="auto"></audio>
+            <audio id="breakSound" src="stone-break.mp3" preload="auto"></audio>
+            <audio id="hit1Sound" src="hit1.wav" preload="auto"></audio>
+            <audio id="hit2Sound" src="hit2.wav" preload="auto"></audio>
+            <audio id="hit3Sound" src="hit3.mp3" preload="auto"></audio>
+        </div>
+        <div class="gif-container">
+            <img id="gifImage" src="outputfinal-unscreen.gif" alt="Final GIF">
+        </div>
+        <img id="hammerImage" src="hammer.png" alt="Hammer">
     </div>
-    <div class="gif-container">
-        <img id="gifImage" src="outputfinal-unscreen.gif" alt="Final GIF">
-    </div>
-    <img id="hammerImage" src="hammer.png" alt="Hammer">
     <img id="carImage" src="car.png" alt="Car">
-    <div id="carText">Pionul lui Lenin</div>
+    <div id="carText">
+        <span id="textLine1">Pionul lui</span>
+        <span id="textLine2">Lenin</span>
+    </div>
     <img id="mask2Layer" src="mask2.png" alt="Mask 2 Layer" loading="lazy">
     <audio id="carSound" src="carsound.mp3" preload="auto"></audio>
     <audio id="musicSound" src="muzica.mp3" preload="auto" loop></audio>
@@ -325,15 +397,131 @@
         let clickCount = 0;
         let isHammerClicked = false;
 
-        const preloadImages = ["background.png", "copaclayerstanga.png", "copaclayerdreapta.png", "drept.png", "piatra.png", "hammer.png", "outputfinal-unscreen.gif", "piatra1.png", "piatra2.png", "switch_off.png", "switch_on.png", "mask.png", "car.png", "mask2.png", "drapele.png"];
+        const preloadImages = ["background.png", "mobile.jpg", "copaclayerstanga.png", "copaclayerdreapta.png", "drept.png", "piatra.png", "hammer.png", "outputfinal-unscreen.gif", "piatra1.png", "piatra2.png", "switch_off.png", "switch_on.png", "mask.png", "car.png", "mask2.png", "drapele.png"];
         preloadImages.forEach(src => {
             const img = new Image();
             img.src = src;
         });
 
+        // Positioning for #main-container with manual overrides
+        function positionMainContainer() {
+            const mainContainer = document.getElementById("main-container");
+            const pixelRatio = window.devicePixelRatio || 1;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const viewportAspect = viewportWidth / viewportHeight;
+
+            // Manual positions for common resolutions
+            const screenPositions = [
+                { width: 1920, height: 1080, stonePosition: { x: 0.48, y: 0.50 }, carPosition: { y: 0.45 } },
+                { width: 2560, height: 1600, stonePosition: { x: 0.49, y: 0.52 }, carPosition: { y: 0.48 } },
+                { width: 1440, height: 900, stonePosition: { x: 0.49, y: 0.52 }, carPosition: { y: 0.48 } },
+                { width: 1366, height: 768, stonePosition: { x: 0.49, y: 0.50 }, carPosition: { y: 0.45 } },
+                { width: 375, height: 667, stonePosition: { x: 0.49, y: 0.53 }, carPosition: { y: 0.55 } }
+            ];
+
+            // Find matching screen resolution
+            let stonePosition = { x: 0.48, y: 0.50 }; // Default
+            const tolerance = 100;
+            for (const screen of screenPositions) {
+                if (Math.abs(viewportWidth - screen.width) < tolerance &&
+                    Math.abs(viewportHeight - screen.height) < tolerance) {
+                    stonePosition = screen.stonePosition;
+                    break;
+                }
+            }
+
+            // Background image aspect ratio (2560x1446)
+            const imageAspect = 2560 / 1446;
+
+            // Calculate scaled background size
+            let bgWidth, bgHeight, offsetX, offsetY;
+            if (viewportAspect > imageAspect) {
+                bgHeight = viewportHeight * pixelRatio;
+                bgWidth = bgHeight * imageAspect;
+                offsetX = ((viewportWidth * pixelRatio) - bgWidth) / 2;
+                offsetY = 0;
+            } else {
+                bgWidth = viewportWidth * pixelRatio;
+                bgHeight = bgWidth / imageAspect;
+                offsetX = 0;
+                offsetY = ((viewportHeight * pixelRatio) - bgHeight) / 2;
+            }
+
+            // Calculate stone's pixel position
+            const stonePixelX = offsetX + stonePosition.x * bgWidth;
+            const stonePixelY = offsetY + stonePosition.y * bgHeight;
+
+            // Center main-container on stone
+            mainContainer.style.left = `${stonePixelX / pixelRatio}px`;
+            mainContainer.style.top = `${stonePixelY / pixelRatio}px`;
+            mainContainer.style.transform = "translate(-50%, -50%)";
+        }
+
+        // Positioning for #carImage
+        function positionCar() {
+            const carImage = document.getElementById("carImage");
+            const pixelRatio = window.devicePixelRatio || 1;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const viewportAspect = viewportWidth / viewportHeight;
+
+            // Use same screenPositions as main-container
+            const screenPositions = [
+                { width: 1920, height: 1080, carPosition: { y: 0.45 } },
+                { width: 2560, height: 1600, carPosition: { y: 0.48 } },
+                { width: 1440, height: 900, carPosition: { y: 0.48 } },
+                { width: 1366, height: 768, carPosition: { y: 0.45 } },
+                { width: 375, height: 667, carPosition: { y: 0.55 } }
+            ];
+
+            // Find matching screen resolution
+            let carPosition = { y: 0.45 }; // Default
+            const tolerance = 100;
+            for (const screen of screenPositions) {
+                if (Math.abs(viewportWidth - screen.width) < tolerance &&
+                    Math.abs(viewportHeight - screen.height) < tolerance) {
+                    carPosition = screen.carPosition;
+                    break;
+                }
+            }
+
+            // Background image aspect ratio (2560x1446)
+            const imageAspect = 2560 / 1446;
+
+            // Calculate scaled background size
+            let bgWidth, bgHeight, offsetY;
+            if (viewportAspect > imageAspect) {
+                bgHeight = viewportHeight * pixelRatio;
+                bgWidth = bgHeight * imageAspect;
+                offsetY = 0;
+            } else {
+                bgWidth = viewportWidth * pixelRatio;
+                bgHeight = bgWidth / imageAspect;
+                offsetY = ((viewportHeight * pixelRatio) - bgHeight) / 2;
+            }
+
+            // Calculate car's pixel position (vertical only)
+            const carPixelY = offsetY + carPosition.y * bgHeight;
+
+            // Set car position
+            carImage.style.top = `${carPixelY / pixelRatio}px`;
+        }
+
+        // Initial positioning and update on resize
+        window.addEventListener("resize", () => {
+            positionMainContainer();
+            positionCar();
+        });
+        window.addEventListener("load", () => {
+            positionMainContainer();
+            positionCar();
+        });
+
         document.addEventListener("DOMContentLoaded", () => {
             const switchOverlay = document.getElementById("switchOverlay");
             const switchImage = document.getElementById("switchImage");
+            const mainContainer = document.getElementById("main-container");
             const overlayImage = document.getElementById("overlayImage");
             const imageContainer = document.querySelector(".image-container");
             const hammerImage = document.getElementById("hammerImage");
@@ -341,7 +529,8 @@
             const animationFrame = document.getElementById("animationFrame");
             const gifImage = document.getElementById("gifImage");
             const carImage = document.getElementById("carImage");
-            const carText = document.getElementById("carText");
+            const textLine1 = document.getElementById("textLine1");
+            const textLine2 = document.getElementById("textLine2");
             const mask2Layer = document.getElementById("mask2Layer");
             const treeLayerLeft = document.getElementById("treeLayerLeft");
             const treeLayerRight = document.getElementById("treeLayerRight");
@@ -353,7 +542,6 @@
             document.body.style.pointerEvents = "none";
             switchImage.style.pointerEvents = "auto";
 
-            // static stars 
             for (let i = 0; i < 300; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -365,7 +553,6 @@
                 starsContainer.appendChild(star);
             }
 
-            // shooting stars
             function createShootingStar() {
                 const star = document.createElement('div');
                 star.className = 'shooting-star';
@@ -382,7 +569,6 @@
 
             setInterval(createShootingStar, 2000);
 
-            // switch click event
             switchImage.addEventListener("click", function switchHandler() {
                 switchImage.src = "switch_off.png";
                 switchSound.volume = 0.2;
@@ -401,7 +587,7 @@
                         treeLayerLeft.style.opacity = "1";
                         treeLayerRight.style.opacity = "1";
                         flagLayer.style.opacity = "1";
-                        imageContainer.style.opacity = "1";
+                        mainContainer.style.opacity = "1";
                         overlayImage.style.opacity = "1";
                         setTimeout(() => {
                             switchOverlay.style.display = "none";
@@ -482,12 +668,9 @@
             const gifContainer = document.querySelector(".gif-container");
             const gifImage = document.getElementById("gifImage");
             const carImage = document.getElementById("carImage");
-            const carText = document.getElementById("carText");
+            const textLine1 = document.getElementById("textLine1");
+            const textLine2 = document.getElementById("textLine2");
             const mask2Layer = document.getElementById("mask2Layer");
-            const treeLayerLeft = document.getElementById("treeLayerLeft");
-            const treeLayerRight = document.getElementById("treeLayerRight");
-            const flagLayer = document.getElementById("flagLayer");
-            const maskLayer = document.getElementById("maskLayer");
             const blackFade = document.getElementById("blackFade");
 
             frame.src = "stanga.png";
@@ -523,25 +706,26 @@
 
                     setTimeout(() => {
                         carSound.volume = 0.4;
-                        carSound.play().catch(error => console.error("Car Audio Error:", error));
+                        setTimeout(() => { carSound.play().catch(error => console.error("Car Audio Error:", error)); }, 2000);
 
                         setTimeout(() => {
                             mask2Layer.style.opacity = "1";
                             carImage.style.opacity = "1";
                             carImage.style.animation = "drive 5s linear forwards";
 
-                            // Fade in text after car animation completes
                             setTimeout(() => {
-                                carText.style.opacity = "1";
-                                
+                                textLine1.style.opacity = "1";
                                 setTimeout(() => {
-                                    blackFade.style.opacity = "1";
+                                    textLine2.style.opacity = "1";
                                     setTimeout(() => {
-                                        window.location.href = "side2.html";
-                                    }, 1000);
-                                }, 1500);
-                            }, 5000); // Matches car's 5s drive animation
-                        }, 6000);
+                                        blackFade.style.opacity = "1";
+                                        setTimeout(() => {
+                                            window.location.href = "side2.html";
+                                        }, 1000);
+                                    }, 4000);
+                                }, 1000);
+                            }, 6000);
+                        }, 7000);
                     }, 1000);
                 }, 2000);
 
