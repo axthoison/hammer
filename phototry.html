@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hammer Animation with Stars</title>
+    <title>PROJECTUM</title>
     <style>
         body {
             text-align: center;
@@ -254,7 +254,7 @@
         }
 
         #switchImage {
-            width: 30vw;
+            width: 20vw;
             height: auto;
             cursor: pointer;
             animation: glow 3s infinite;
@@ -360,7 +360,6 @@
             <img id="animationFrame" src="standing.png" alt="Animation Frame">
             <img id="overlayImage" src="piatra.png" alt="Overlay Image">
             <audio id="winkSound" src="wink.mp3" preload="auto"></audio>
-            <audio id="breakSound" src="stone-break.mp3" preload="auto"></audio>
             <audio id="hit1Sound" src="hit1.wav" preload="auto"></audio>
             <audio id="hit2Sound" src="hit2.wav" preload="auto"></audio>
             <audio id="hit3Sound" src="hit3.mp3" preload="auto"></audio>
@@ -403,7 +402,6 @@
             img.src = src;
         });
 
-        // Positioning for #main-container with manual overrides
         function positionMainContainer() {
             const mainContainer = document.getElementById("main-container");
             const pixelRatio = window.devicePixelRatio || 1;
@@ -411,7 +409,6 @@
             const viewportHeight = window.innerHeight;
             const viewportAspect = viewportWidth / viewportHeight;
 
-            // Manual positions for common resolutions
             const screenPositions = [
                 { width: 1920, height: 1080, stonePosition: { x: 0.48, y: 0.50 }, carPosition: { y: 0.45 } },
                 { width: 2560, height: 1600, stonePosition: { x: 0.49, y: 0.52 }, carPosition: { y: 0.48 } },
@@ -420,8 +417,7 @@
                 { width: 375, height: 667, stonePosition: { x: 0.49, y: 0.53 }, carPosition: { y: 0.55 } }
             ];
 
-            // Find matching screen resolution
-            let stonePosition = { x: 0.48, y: 0.50 }; // Default
+            let stonePosition = { x: 0.48, y: 0.50 }; // default
             const tolerance = 100;
             for (const screen of screenPositions) {
                 if (Math.abs(viewportWidth - screen.width) < tolerance &&
@@ -431,10 +427,8 @@
                 }
             }
 
-            // Background image aspect ratio (2560x1446)
             const imageAspect = 2560 / 1446;
 
-            // Calculate scaled background size
             let bgWidth, bgHeight, offsetX, offsetY;
             if (viewportAspect > imageAspect) {
                 bgHeight = viewportHeight * pixelRatio;
@@ -448,17 +442,15 @@
                 offsetY = ((viewportHeight * pixelRatio) - bgHeight) / 2;
             }
 
-            // Calculate stone's pixel position
             const stonePixelX = offsetX + stonePosition.x * bgWidth;
             const stonePixelY = offsetY + stonePosition.y * bgHeight;
 
-            // Center main-container on stone
             mainContainer.style.left = `${stonePixelX / pixelRatio}px`;
             mainContainer.style.top = `${stonePixelY / pixelRatio}px`;
             mainContainer.style.transform = "translate(-50%, -50%)";
         }
 
-        // Positioning for #carImage
+
         function positionCar() {
             const carImage = document.getElementById("carImage");
             const pixelRatio = window.devicePixelRatio || 1;
@@ -466,7 +458,7 @@
             const viewportHeight = window.innerHeight;
             const viewportAspect = viewportWidth / viewportHeight;
 
-            // Use same screenPositions as main-container
+
             const screenPositions = [
                 { width: 1920, height: 1080, carPosition: { y: 0.45 } },
                 { width: 2560, height: 1600, carPosition: { y: 0.48 } },
@@ -475,8 +467,7 @@
                 { width: 375, height: 667, carPosition: { y: 0.55 } }
             ];
 
-            // Find matching screen resolution
-            let carPosition = { y: 0.45 }; // Default
+            let carPosition = { y: 0.45 }; // default
             const tolerance = 100;
             for (const screen of screenPositions) {
                 if (Math.abs(viewportWidth - screen.width) < tolerance &&
@@ -486,10 +477,10 @@
                 }
             }
 
-            // Background image aspect ratio (2560x1446)
+
             const imageAspect = 2560 / 1446;
 
-            // Calculate scaled background size
+
             let bgWidth, bgHeight, offsetY;
             if (viewportAspect > imageAspect) {
                 bgHeight = viewportHeight * pixelRatio;
@@ -501,14 +492,14 @@
                 offsetY = ((viewportHeight * pixelRatio) - bgHeight) / 2;
             }
 
-            // Calculate car's pixel position (vertical only)
+
             const carPixelY = offsetY + carPosition.y * bgHeight;
 
-            // Set car position
+
             carImage.style.top = `${carPixelY / pixelRatio}px`;
         }
 
-        // Initial positioning and update on resize
+
         window.addEventListener("resize", () => {
             positionMainContainer();
             positionCar();
@@ -570,42 +561,40 @@
             setInterval(createShootingStar, 2000);
 
             switchImage.addEventListener("click", function switchHandler() {
-                switchImage.src = "switch_off.png";
-                switchSound.volume = 0.2;
-                switchSound.play().catch(error => console.error("Audio Error:", error));
-                
-                ambientSound.volume = 0.5;
-                setTimeout(() => {
-                    ambientSound.play().catch(error => console.error("Ambient Audio Error:", error));
-                }, 500);
+            switchImage.src = "switch_off.png";
+            switchSound.volume = 0.2;
+            switchSound.play().catch(error => console.error("Audio Error:", error));
 
+            ambientSound.volume = 0.5;
+            setTimeout(() => {
+                ambientSound.play().catch(error => console.error("Ambient Audio Error:", error));
+            }, 500);
+
+            setTimeout(() => {
+                switchImage.style.opacity = "0";
                 setTimeout(() => {
-                    switchImage.style.opacity = "0";
+                    switchOverlay.style.opacity = "0";
+                    maskLayer.style.opacity = "1";
+                    treeLayerLeft.style.opacity = "1";
+                    treeLayerRight.style.opacity = "1";
+                    flagLayer.style.opacity = "1";
+                    mainContainer.style.opacity = "1";
+                    overlayImage.style.opacity = "1";
+                    hammerImage.style.opacity = "1"; 
+                    document.body.style.pointerEvents = "none";
+                    hammerImage.style.pointerEvents = "auto"; 
                     setTimeout(() => {
-                        switchOverlay.style.opacity = "0";
-                        maskLayer.style.opacity = "1";
-                        treeLayerLeft.style.opacity = "1";
-                        treeLayerRight.style.opacity = "1";
-                        flagLayer.style.opacity = "1";
-                        mainContainer.style.opacity = "1";
-                        overlayImage.style.opacity = "1";
-                        setTimeout(() => {
-                            switchOverlay.style.display = "none";
-                            switchImage.style.pointerEvents = "none";
-                            setTimeout(() => {
-                                hammerImage.style.opacity = "1";
-                                document.body.style.pointerEvents = "none";
-                                hammerImage.style.pointerEvents = "auto";
-                                setTimeout(() => {
-                                    hammerImage.style.animation = "bling 2s infinite";
-                                }, 3000);
-                            }, 3000);
-                        }, 2000);
-                    }, 1000);
-                }, 500);
+                        hammerImage.style.animation = "bling 2s infinite"; 
+                    }, 3500); 
+                    setTimeout(() => {
+                        switchOverlay.style.display = "none";
+                        switchImage.style.pointerEvents = "none";
+                    }, 2000);
+                }, 1000);
+            }, 500);
 
-                switchImage.removeEventListener("click", switchHandler);
-            });
+            switchImage.removeEventListener("click", switchHandler);
+        });
 
             hammerImage.addEventListener("click", () => {
                 if (!isHammerClicked) {
@@ -660,78 +649,84 @@
         }
 
         function playClickAnimation() {
-            clearTimeout(idleTimeout);
-            idleTimeout = null;
+    clearTimeout(idleTimeout);
+    idleTimeout = null;
 
-            const frame = document.getElementById("animationFrame");
-            const overlayImage = document.getElementById("overlayImage");
-            const gifContainer = document.querySelector(".gif-container");
-            const gifImage = document.getElementById("gifImage");
-            const carImage = document.getElementById("carImage");
-            const textLine1 = document.getElementById("textLine1");
-            const textLine2 = document.getElementById("textLine2");
-            const mask2Layer = document.getElementById("mask2Layer");
-            const blackFade = document.getElementById("blackFade");
+    const frame = document.getElementById("animationFrame");
+    const overlayImage = document.getElementById("overlayImage");
+    const gifContainer = document.querySelector(".gif-container");
+    const gifImage = document.getElementById("gifImage");
+    const carImage = document.getElementById("carImage");
+    const textLine1 = document.getElementById("textLine1");
+    const textLine2 = document.getElementById("textLine2");
+    const mask2Layer = document.getElementById("mask2Layer");
+    const blackFade = document.getElementById("blackFade");
 
-            frame.src = "stanga.png";
+    
+    frame.src = "stanga.png";
+    setTimeout(() => {
+        frame.src = "dreapta.png";
+    }, 500);
+
+    clickCount++;
+    if (clickCount === 1) {
+        overlayImage.style.animation = "none";
+        hit1Sound.volume = 0.3;
+        hit1Sound.play().catch(error => console.error("Hit1 Audio Error:", error));
+        overlayImage.src = "piatra1.png";
+    } else if (clickCount === 2) {
+        hit2Sound.volume = 0.3;
+        hit2Sound.play().catch(error => console.error("Hit2 Audio Error:", error));
+        overlayImage.src = "piatra2.png";
+    } else if (clickCount === 3) {
+        hit3Sound.volume = 0.3;
+        hit3Sound.play().catch(error => console.error("Hit3 Audio Error:", error));
+
+       
+        setTimeout(() => {
+            overlayImage.style.opacity = "0";
+            overlayImage.style.pointerEvents = "none";
+
+           
+            gifImage.src = "";
+            gifImage.src = "outputfinal-unscreen.gif";
+            gifContainer.style.opacity = "1";
+
             setTimeout(() => {
-                frame.src = "dreapta.png";
-            }, 500);
-
-            clickCount++;
-            if (clickCount === 1) {
-                overlayImage.style.animation = "none";
-                hit1Sound.volume = 0.3;
-                hit1Sound.play().catch(error => console.error("Hit1 Audio Error:", error));
-                overlayImage.src = "piatra1.png";
-            } else if (clickCount === 2) {
-                hit2Sound.volume = 0.3;
-                hit2Sound.play().catch(error => console.error("Hit2 Audio Error:", error));
-                overlayImage.src = "piatra2.png";
-            } else if (clickCount === 3) {
-                hit3Sound.volume = 0.3;
-                hit3Sound.play().catch(error => console.error("Hit3 Audio Error:", error));
-                overlayImage.style.opacity = "0";
-                overlayImage.style.pointerEvents = "none";
-
-                gifImage.src = "";
-                gifImage.src = "outputfinal-unscreen.gif";
-                gifContainer.style.opacity = "1";
+                frame.style.transition = "opacity 1s ease-in-out";
+                gifContainer.style.transition = "opacity 1s ease-in-out";
+                frame.style.opacity = "0";
+                gifContainer.style.opacity = "0";
 
                 setTimeout(() => {
-                    frame.style.transition = "opacity 1s ease-in-out";
-                    gifContainer.style.transition = "opacity 1s ease-in-out";
-                    frame.style.opacity = "0";
-                    gifContainer.style.opacity = "0";
+                    carSound.volume = 0.4;
+                    setTimeout(() => { carSound.play().catch(error => console.error("Car Audio Error:", error)); }, 2000);
 
                     setTimeout(() => {
-                        carSound.volume = 0.4;
-                        setTimeout(() => { carSound.play().catch(error => console.error("Car Audio Error:", error)); }, 2000);
+                        mask2Layer.style.opacity = "1";
+                        carImage.style.opacity = "1";
+                        carImage.style.animation = "drive 5s linear forwards";
 
                         setTimeout(() => {
-                            mask2Layer.style.opacity = "1";
-                            carImage.style.opacity = "1";
-                            carImage.style.animation = "drive 5s linear forwards";
-
+                            textLine1.style.opacity = "1";
                             setTimeout(() => {
-                                textLine1.style.opacity = "1";
+                                textLine2.style.opacity = "1";
                                 setTimeout(() => {
-                                    textLine2.style.opacity = "1";
+                                    blackFade.style.opacity = "1";            
                                     setTimeout(() => {
-                                        blackFade.style.opacity = "1";
-                                        setTimeout(() => {
-                                            window.location.href = "side2.html";
-                                        }, 1000);
-                                    }, 4000);
-                                }, 1000);
-                            }, 6000);
-                        }, 7000);
-                    }, 1000);
-                }, 2000);
+                                        window.location.href = "side2.html";
+                                    }, 1000);
+                                }, 4000);
+                            }, 1000);
+                        }, 6000);
+                    }, 7000);
+                }, 1000);
+            }, 2000);
+        }, 500); 
 
-                clickCount = 0;
-            }
-        }
+        clickCount = 0;
+    }
+}
     </script>
 </body>
 </html>
