@@ -94,7 +94,7 @@
 
         .star {
             position: absolute;
-            background: white;
+            background: rgb(255, 255, 255);
             border-radius: 50%;
             animation: twinkle var(--twinkle-duration) infinite;
             width: 3px;
@@ -106,7 +106,7 @@
             position: fixed;
             width: 3px;
             height: 3px;
-            background: #fff;
+            background: rgb(240, 233, 165);
             border-radius: 50%;
             box-shadow: 0 0 0 3px rgba(255,255,255,0.2),
                         0 0 0 6px rgba(255,255,255,0.1),
@@ -170,6 +170,7 @@
             padding: 0;
             line-height: 1;
             text-align: center;
+            color:rgb(246, 242, 203);
         }
 
         #intro1 {
@@ -356,10 +357,15 @@
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.6s ease-out;
+            text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
         }
-
+        .description {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
         .name {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
         }
 
         .team-member.visible .name,
@@ -377,12 +383,13 @@
             font-size: 2.5em;
             font-weight: 700;
             margin-bottom: 15px;
+            color:rgb(246, 242, 203);
         }
 
         .role {
             font-size: 1.5em;
             font-weight: 700;
-            color: #d3d3d3;
+            color:rgb(246, 242, 203);
             margin-bottom: 15px;
         }
 
@@ -391,6 +398,7 @@
             font-weight: 400;
             line-height: 1.5;
             margin-bottom: 15px;
+            color:rgb(246, 242, 203);
         }
 
         .team-member.trio {
@@ -579,7 +587,7 @@
         </div>
 
         <div class="team-member left">
-            <img src="Nicoleta_Cocoță.PNG" alt="Nicoleta Cocoță" class="member-image img-nicoleta">
+            <img src="Nicoleta_Cocota.PNG" alt="Nicoleta Cocoță" class="member-image img-nicoleta">
             <div class="text-content">
                 <div class="name">Nicoleta Cocoță</div>
                 <div class="role" data-lang="ro">Director producție</div>
@@ -591,7 +599,7 @@
         </div>
 
         <div class="team-member right-only">
-            <img src="Vladislav_Hîncu.JPG" alt="Vladislav Hîncu" class="member-image img-vladislav">
+            <img src="Vladislav_Hincu.JPG" alt="Vladislav Hincu" class="member-image img-vladislav">
             <div class="text-content">
                 <div class="name">Vladislav Hîncu</div>
                 <div class="role" data-lang="ro">Director de imagine</div>
@@ -617,7 +625,7 @@
         <div class="team-member trio">
             <div class="trio-members">
                 <div class="trio-member">
-                    <img src="Alexandru_Bublițchi.JPG" class="member-image img-sandu">
+                    <img src="Alexandru_Bublitchi.JPG" class="member-image img-sandu">
                     <div class="name">Sandu Bublițchi</div>
                     <div class="role" data-lang="ro">Interpret vioară</div>
                     <div class="role" data-lang="en">Violinist</div>

@@ -5,20 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROJECTUM</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap');
+        
         body {
-            text-align: center;
-            background: url('background.png') no-repeat center center fixed;
-            background-size: cover;
-            background-color: #1a1a1a;
+            margin: 0;
             height: 100vh;
             overflow: hidden;
-            margin: 0;
+            background-color: #1a1a1a;
+        }
+
+        #scene-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 2560px; /* Native background size */
+            height: 1446px;
+            transform: translate(-50%, -50%) scale(var(--scene-scale, 1));
+            transform-origin: center center;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        #background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2560px;
+            height: 1446px;
+            z-index: 0;
         }
 
         .stars-container {
-            position: fixed;
-            width: 100%;
-            height: 100vh;
+            position: absolute;
+            width: 2560px;
+            height: 1446px;
             top: 0;
             left: 0;
             z-index: 1;
@@ -38,7 +58,7 @@
         }
 
         .shooting-star {
-            position: fixed;
+            position: absolute;
             width: 3px;
             height: 3px;
             background: #fff;
@@ -52,7 +72,7 @@
 
         .shooting-star::before {
             content: '';
-            position: fixed;
+            position: absolute;
             top: 50%;
             transform: translateY(-50%);
             width: 80px;
@@ -86,34 +106,46 @@
             }
         }
 
-        #maskLayer {
-            position: fixed;
-            left: 0;
+        #treeLayerLeft, #treeLayerRight, #flagLayer {
+            position: absolute;
             top: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
+            left: 0;
+            width: 2560px;
+            height: 1446px;
+            z-index: 4;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #mask2Layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2560px;
+            height: 1446px;
+            z-index: 4;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #maskLayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2560px;
+            height: 1446px;
             z-index: 2;
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
 
-        #treeLayerLeft, #treeLayerRight, #flagLayer {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: 8;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
         #main-container {
-            position: fixed;
-            width: 20vw;
-            height: 20vw;
+            position: absolute;
+            width: 512px; /* 20% of 2560px */
+            height: 512px;
+            left: 1280px; /* Center of 2560px, aligned with stairs */
+            top: 719px; /* Aligned with stairs */
+            transform: translate(-50%, -50%);
             z-index: 4;
             opacity: 0;
             transition: opacity 1s ease-in-out;
@@ -123,7 +155,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 16vw;
+            width: 410px; /* 16% of 2560px */
         }
 
         #animationFrame {
@@ -133,10 +165,10 @@
 
         #overlayImage {
             position: absolute;
-            width: 15vw;
+            width: 400px; /* 15% of 2560px */
             height: auto;
-            left: 34%;
-            top: 6%;
+            left: 138px; /* 34% of 512px */
+            top: 15px; /* 6% of 512px */
             cursor: pointer;
             user-select: none;
             z-index: 5;
@@ -144,10 +176,10 @@
 
         .gif-container {
             position: absolute;
-            width: 78vw;
+            width: 2000px; /* 78% of 2560px */
             height: auto;
-            left: 60%;
-            top: -42%;
+            left: 340px; /* 60% of 2560px */
+            top: -210px; /* -42% of 1446px */
             transform: translateX(-50%);
             z-index: 6;
             opacity: 0;
@@ -161,10 +193,10 @@
 
         #hammerImage {
             position: absolute;
-            width: 4vw;
+            width: 102px; /* 4% of 2560px */
             height: auto;
-            left: 5%;
-            top: 84%;
+            left: 26px; /* 5% of 512px */
+            top: 430px; /* 84% of 512px */
             cursor: pointer;
             z-index: 5;
             opacity: 0;
@@ -172,70 +204,100 @@
         }
 
         #carImage {
-            position: fixed;
-            width: 38vw;
+            position: absolute;
+            width: 973px; /* 38% of 2560px */
             height: auto;
-            right: 0vw;
-            z-index: 7;
+            right: -742px; /* -29% of 2560px */
+            top: 650px; /* 45% of 1446px */
+            z-index: 3; 
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
 
         #carText {
-            position: fixed;
-            top: 65%;
-            left: 50%;
+            position: absolute;
+            top: 1080px; /* Moved up from 1120px */
+            left: 1450px; /* Moved right from 1280px */
             transform: translate(-50%, -50%);
             z-index: 9;
         }
 
-        #textLine1, #textLine2 {
+        #textLine1Container {
+            width: 600px; /* Fixed width for both lines */
+            text-align: center;
+            margin-left: -80px; /* Center the text within the container */
+        }
+
+        #textLine1 {
             display: block;
-            color: white;
-            font-size: 3vw;
-            font-family: 'Times New Roman';
-            font-weight: bold;
-            text-transform: uppercase;
+            color: #fc332e;
+            font-size: 77px; /* Smaller font for the first line */
+            font-family: "Unbounded", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+            font-style: normal;
             opacity: 0;
             transition: opacity 1s ease-in-out;
-            filter: drop-shadow(0 0 0.8vw rgba(255, 255, 255, 0.6));
+            text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
+            line-height: 1; /* Tighten line spacing */
+        }
+
+        #textLine1Second {
+            display: block;
+            color: #fc332e;
+            font-size: 110px; /* Larger font for the second line in container */
+            font-family: "Unbounded", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+            font-style: normal;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            text-align: center;
+            text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
+            line-height: 1; /* Tighten line spacing */
+            letter-spacing: -2px; /* Fine-tune to fit within 300px width */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        #textLine2 {
+            margin-top: 200px;
+            margin-left: -200px;
+            display: block;
+            color: #fbf79a;
+            font-size: 60px; /* 3% of 2560px */
+            font-family: "Unbounded", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+            font-style: normal;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
         }
 
         @keyframes drive {
-            0% { right: -29vw; }
-            100% { right: 125vw; }
+            0% { right: -742px; }
+            100% { right: 3200px; }
         }
 
         @keyframes bling {
-            0% { filter: drop-shadow(0 0 0.1vw rgba(255, 255, 255, 0.5)); }
-            50% { filter: drop-shadow(0 0 0.3vw rgba(255, 255, 255, 0.9)); }
-            100% { filter: drop-shadow(0 0 0.1vw rgba(255, 255, 255, 0.5)); }
+            0% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9)); }
+            100% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5)); }
         }
 
         @keyframes stoneGlow {
-            0% { filter: drop-shadow(0 0 0.05vw rgba(255, 255, 255, 0.4)); }
-            50% { filter: drop-shadow(0 0 0.15vw rgba(255, 255, 255, 0.7)); }
-            100% { filter: drop-shadow(0 0 0.05vw rgba(255, 255, 255, 0.4)); }
+            0% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)); }
+            50% { filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7)); }
+            100% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)); }
         }
 
         @keyframes glow {
-            0% { filter: drop-shadow(0 0 0.2vw rgba(200, 200, 200, 0.7)); }
-            25% { filter: drop-shadow(0 0 0.6vw rgba(200, 200, 200, 0.9)); }
-            50% { filter: drop-shadow(0 0 0.3vw rgba(200, 200, 200, 0.7)); }
-            75% { filter: drop-shadow(0 0 0.8vw rgba(200, 200, 200, 0.9)); }
-            100% { filter: drop-shadow(0 0 0.2vw rgba(200, 200, 200, 0.7)); }
-        }
-
-        #mask2Layer {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: 8;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
+            0% { filter: drop-shadow(0 0 5px rgba(200, 200, 200, 0.7)); }
+            25% { filter: drop-shadow(0 0 15px rgba(200, 200, 200, 0.9)); }
+            50% { filter: drop-shadow(0 0 8px rgba(200, 200, 200, 0.7)); }
+            75% { filter: drop-shadow(0 0 20px rgba(200, 200, 200, 0.9)); }
+            100% { filter: drop-shadow(0 0 5px rgba(200, 200, 200, 0.7)); }
         }
 
         #switchOverlay {
@@ -254,7 +316,7 @@
         }
 
         #switchImage {
-            width: 20vw;
+            width: 512px; /* 20% of 2560px */
             height: auto;
             cursor: pointer;
             animation: glow 3s infinite;
@@ -274,10 +336,14 @@
         }
 
         @media (max-width: 600px) {
-            body {
-                background: url('mobile.png') no-repeat center center fixed;
-                background-size: cover;
-                background-color: #1a1a1a;
+            #scene-container {
+                width: 375px; /* Mobile background size */
+                height: 667px;
+            }
+
+            #background-image {
+                width: 375px;
+                height: 667px;
             }
 
             #maskLayer, #treeLayerLeft, #treeLayerRight, #flagLayer, #mask2Layer {
@@ -285,107 +351,158 @@
             }
 
             #main-container {
-                width: 25vw;
-                height: 25vw;
+                width: 94px; /* 25% of 375px */
+                height: 94px;
+                left: 188px; /* Center of 375px, aligned with stairs */
+                top: 354px; /* 53% of 667px, aligned with stairs */
             }
 
             .image-container {
-                width: 20vw;
+                width: 75px; /* 20% of 375px */
                 left: 0;
                 top: 0;
             }
 
             #overlayImage {
-                width: 18vw;
-                left: 34%;
-                top: 6%;
+                width: 68px; /* 18% of 375px */
+                left: 32px; /* 34% of 94px */
+                top: 6px; /* 6% of 94px */
             }
 
             #hammerImage {
-                width: 5vw;
-                left: 5%;
-                top: 84%;
+                width: 19px; /* 5% of 375px */
+                left: 5px; /* 5% of 94px */
+                top: 79px; /* 84% of 94px */
             }
 
             .gif-container {
-                width: 60vw;
-                left: 60%;
-                top: -42%;
+                width: 225px; /* 60% of 375px */
+                left: 225px; /* 60% of 375px */
+                top: -280px; /* -42% of 667px */
                 transform: translateX(-50%);
             }
 
             #carImage {
-                width: 40vw;
-                right: -29vw;
+                width: 150px; /* 40% of 375px */
+                right: -109px; /* -29% of 375px */
+                top: 367px; /* 55% of 667px */
             }
 
-            #textLine1, #textLine2 {
-                font-size: 5vw;
+            #carText {
+                top: 388px; /* Adjusted for mobile, moved up from 434px */
+                left: 234px; /* Adjusted for mobile, moved right from 188px */
+            }
+
+            #textLine1Container {
+                width: 150px; /* Adjusted for mobile */
+            }
+
+            #textLine1 {
+                font-size: 19px; /* Adjusted for mobile */
+            }
+
+            #textLine1Second {
+                font-size: 24px; /* Adjusted for mobile */
+                letter-spacing: -1px; /* Fine-tune for mobile */
+            }
+
+            #textLine2 {
+                margin-top: 50px; /* Adjusted for mobile */
+                font-size: 15px; /* Adjusted for mobile */
             }
 
             .star {
-                width: 0.5vw;
-                height: 0.5vw;
+                width: 2px;
+                height: 2px;
             }
 
             .shooting-star {
-                width: 0.5vw;
-                height: 0.5vw;
-                box-shadow: 0 0 0 0.5vw rgba(255,255,255,0.2), 
-                           0 0 0 1vw rgba(255,255,255,0.1), 
-                           0 0 2vw rgba(255,255,255,0.3);
+                width: 2px;
+                height: 2px;
+                box-shadow: 0 0 0 2px rgba(255,255,255,0.2), 
+                           0 0 0 4px rgba(255,255,255,0.1), 
+                           0 0 8px rgba(255,255,255,0.3);
             }
 
             .shooting-star::before {
-                width: 10vw;
-                height: 0.15vw;
-                filter: blur(0.15vw);
+                width: 38px; /* 10% of 375px */
+                height: 1px;
+                filter: blur(0.5px);
             }
         }
     </style>
 </head>
 <body>
+    <div id="scene-container">
+        <img id="background-image" src="background.png" alt="Background">
+        <div class="stars-container"></div>
+        <img id="carImage" src="car.png" alt="Car">
+        <img id="maskLayer" src="mask.png" alt="Mask Layer">
+        <img id="treeLayerLeft" src="copaclayerstanga.png" alt="Tree Layer Left">
+        <img id="treeLayerRight" src="copaclayerdreapta.png" alt="Tree Layer Right">
+        <img id="flagLayer" src="drapele.png" alt="Flag Layer">
+        <img id="mask2Layer" src="mask2.png" alt="Mask 2 Layer">
+        <div id="main-container">
+            <div class="image-container">
+                <img id="animationFrame" src="standing.png" alt="Animation Frame">
+                <img id="overlayImage" src="piatra.png" alt="Overlay Image">
+                <audio id="winkSound" src="wink.mp3" preload="auto"></audio>
+                <audio id="hit1Sound" src="hit1.wav" preload="auto"></audio>
+                <audio id="hit2Sound" src="hit2.wav" preload="auto"></audio>
+                <audio id="hit3Sound" src="hit3.mp3" preload="auto"></audio>
+            </div>
+            <div class="gif-container">
+                <img id="gifImage" src="outputfinal-unscreen.gif" alt="Final GIF">
+            </div>
+            <img id="hammerImage" src="hammer.png" alt="Hammer">
+        </div>
+        <div id="carText">
+            <div id="textLine1Container">
+                <span id="textLine1">Pionul lui</span>
+                <span id="textLine1Second">LENIN</span>
+            </div>
+            <span id="textLine2">ÎN CURÂND LA CINEMA</span>
+        </div>
+    </div>
     <div id="switchOverlay">
         <img id="switchImage" src="switch_on.png" alt="Switch">
         <audio id="switchSound" src="switch.mp3" preload="auto"></audio>
         <audio id="ambientSound" src="ambianta.mp3" preload="auto" loop></audio>
     </div>
-    <div class="stars-container"></div>
-    <img id="maskLayer" src="mask.png" alt="Mask Layer" loading="lazy">
-    <img id="treeLayerLeft" src="copaclayerstanga.png" alt="Tree Layer Left" loading="lazy">
-    <img id="treeLayerRight" src="copaclayerdreapta.png" alt="Tree Layer Right" loading="lazy">
-    <img id="flagLayer" src="drapele.png" alt="Flag Layer" loading="lazy">
-    <div id="main-container">
-        <div class="image-container">
-            <img id="animationFrame" src="standing.png" alt="Animation Frame">
-            <img id="overlayImage" src="piatra.png" alt="Overlay Image">
-            <audio id="winkSound" src="wink.mp3" preload="auto"></audio>
-            <audio id="hit1Sound" src="hit1.wav" preload="auto"></audio>
-            <audio id="hit2Sound" src="hit2.wav" preload="auto"></audio>
-            <audio id="hit3Sound" src="hit3.mp3" preload="auto"></audio>
-        </div>
-        <div class="gif-container">
-            <img id="gifImage" src="outputfinal-unscreen.gif" alt="Final GIF">
-        </div>
-        <img id="hammerImage" src="hammer.png" alt="Hammer">
-    </div>
-    <img id="carImage" src="car.png" alt="Car">
-    <div id="carText">
-        <span id="textLine1">Pionul lui</span>
-        <span id="textLine2">Lenin</span>
-    </div>
-    <img id="mask2Layer" src="mask2.png" alt="Mask 2 Layer" loading="lazy">
     <audio id="carSound" src="carsound.mp3" preload="auto"></audio>
     <audio id="musicSound" src="muzica.mp3" preload="auto" loop></audio>
     <div id="blackFade"></div>
 
     <script>
+        // Dynamic scaling for #scene-container to cover viewport
+        function updateScale() {
+            const sceneContainer = document.getElementById('scene-container');
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const isMobile = windowWidth <= 600;
+
+            // Background dimensions
+            const bgWidth = isMobile ? 375 : 2560;
+            const bgHeight = isMobile ? 667 : 1446;
+
+            // Calculate scale to cover the viewport
+            const scaleWidth = windowWidth / bgWidth;
+            const scaleHeight = windowHeight / bgHeight;
+            const coverScale = Math.max(scaleWidth, scaleHeight);
+
+            // Apply the scale to the entire scene-container
+            sceneContainer.style.setProperty('--scene-scale', coverScale);
+        }
+
+        // Run on load and resize
+        window.addEventListener('load', updateScale);
+        window.addEventListener('resize', updateScale);
+
         const idleFrames = ["drept.png", "dreaptaochi.png", "wink.png", "dreaptaochi.png", "wink.png", "dreaptaochi.png"];
         const frameDelays = [600, 600, 200, 200, 200, 400];
         let idleIndex = 0;
         let idleTimeout;
         const winkSound = document.getElementById("winkSound");
-        const breakSound = document.getElementById("breakSound");
         const switchSound = document.getElementById("switchSound");
         const ambientSound = document.getElementById("ambientSound");
         const carSound = document.getElementById("carSound");
@@ -396,120 +513,13 @@
         let clickCount = 0;
         let isHammerClicked = false;
 
-        const preloadImages = ["background.png", "mobile.png", "copaclayerstanga.png", "copaclayerdreapta.png", "drept.png", "piatra.png", "hammer.png", "outputfinal-unscreen.gif", "piatra1.png", "piatra2.png", "switch_off.png", "switch_on.png", "mask.png", "car.png", "mask2.png", "drapele.png"];
-        preloadImages.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
-
-        function positionMainContainer() {
-            const mainContainer = document.getElementById("main-container");
-            const pixelRatio = window.devicePixelRatio || 1;
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const viewportAspect = viewportWidth / viewportHeight;
-
-            const screenPositions = [
-                { width: 1920, height: 1080, stonePosition: { x: 0.48, y: 0.50 }, carPosition: { y: 0.45 } },
-                { width: 2560, height: 1600, stonePosition: { x: 0.49, y: 0.52 }, carPosition: { y: 0.48 } },
-                { width: 1440, height: 900, stonePosition: { x: 0.49, y: 0.52 }, carPosition: { y: 0.48 } },
-                { width: 1366, height: 768, stonePosition: { x: 0.49, y: 0.50 }, carPosition: { y: 0.45 } },
-                { width: 375, height: 667, stonePosition: { x: 0.49, y: 0.53 }, carPosition: { y: 0.55 } }
-            ];
-
-            let stonePosition = { x: 0.48, y: 0.50 }; // default
-            const tolerance = 100;
-            for (const screen of screenPositions) {
-                if (Math.abs(viewportWidth - screen.width) < tolerance &&
-                    Math.abs(viewportHeight - screen.height) < tolerance) {
-                    stonePosition = screen.stonePosition;
-                    break;
-                }
-            }
-
-            const imageAspect = 2560 / 1446;
-
-            let bgWidth, bgHeight, offsetX, offsetY;
-            if (viewportAspect > imageAspect) {
-                bgHeight = viewportHeight * pixelRatio;
-                bgWidth = bgHeight * imageAspect;
-                offsetX = ((viewportWidth * pixelRatio) - bgWidth) / 2;
-                offsetY = 0;
-            } else {
-                bgWidth = viewportWidth * pixelRatio;
-                bgHeight = bgWidth / imageAspect;
-                offsetX = 0;
-                offsetY = ((viewportHeight * pixelRatio) - bgHeight) / 2;
-            }
-
-            const stonePixelX = offsetX + stonePosition.x * bgWidth;
-            const stonePixelY = offsetY + stonePosition.y * bgHeight;
-
-            mainContainer.style.left = `${stonePixelX / pixelRatio}px`;
-            mainContainer.style.top = `${stonePixelY / pixelRatio}px`;
-            mainContainer.style.transform = "translate(-50%, -50%)";
-        }
-
-
-        function positionCar() {
-            const carImage = document.getElementById("carImage");
-            const pixelRatio = window.devicePixelRatio || 1;
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const viewportAspect = viewportWidth / viewportHeight;
-
-
-            const screenPositions = [
-                { width: 1920, height: 1080, carPosition: { y: 0.45 } },
-                { width: 2560, height: 1600, carPosition: { y: 0.48 } },
-                { width: 1440, height: 900, carPosition: { y: 0.48 } },
-                { width: 1366, height: 768, carPosition: { y: 0.45 } },
-                { width: 375, height: 667, carPosition: { y: 0.55 } }
-            ];
-
-            let carPosition = { y: 0.45 }; // default
-            const tolerance = 100;
-            for (const screen of screenPositions) {
-                if (Math.abs(viewportWidth - screen.width) < tolerance &&
-                    Math.abs(viewportHeight - screen.height) < tolerance) {
-                    carPosition = screen.carPosition;
-                    break;
-                }
-            }
-
-
-            const imageAspect = 2560 / 1446;
-
-
-            let bgWidth, bgHeight, offsetY;
-            if (viewportAspect > imageAspect) {
-                bgHeight = viewportHeight * pixelRatio;
-                bgWidth = bgHeight * imageAspect;
-                offsetY = 0;
-            } else {
-                bgWidth = viewportWidth * pixelRatio;
-                bgHeight = bgWidth / imageAspect;
-                offsetY = ((viewportHeight * pixelRatio) - bgHeight) / 2;
-            }
-
-
-            const carPixelY = offsetY + carPosition.y * bgHeight;
-
-
-            carImage.style.top = `${carPixelY / pixelRatio}px`;
-        }
-
-
-        window.addEventListener("resize", () => {
-            positionMainContainer();
-            positionCar();
-        });
-        window.addEventListener("load", () => {
-            positionMainContainer();
-            positionCar();
-        });
-
         document.addEventListener("DOMContentLoaded", () => {
+            const preloadImages = ["background.png", "mobile.png", "copaclayerstanga.png", "copaclayerdreapta.png", "drept.png", "piatra.png", "hammer.png", "outputfinal-unscreen.gif", "piatra1.png", "piatra2.png", "switch_off.png", "switch_on.png", "mask.png", "car.png", "mask2.png", "drapele.png"];
+            preloadImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+
             const switchOverlay = document.getElementById("switchOverlay");
             const switchImage = document.getElementById("switchImage");
             const mainContainer = document.getElementById("main-container");
@@ -521,6 +531,7 @@
             const gifImage = document.getElementById("gifImage");
             const carImage = document.getElementById("carImage");
             const textLine1 = document.getElementById("textLine1");
+            const textLine1Second = document.getElementById("textLine1Second");
             const textLine2 = document.getElementById("textLine2");
             const mask2Layer = document.getElementById("mask2Layer");
             const treeLayerLeft = document.getElementById("treeLayerLeft");
@@ -536,8 +547,8 @@
             for (let i = 0; i < 300; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 2560}px`;
+                star.style.top = `${Math.random() * 1446}px`;
                 star.style.width = `${Math.random() * 4 + 1}px`;
                 star.style.height = star.style.width;
                 star.style.setProperty('--twinkle-duration', `${Math.random() * 4 + 2}s`);
@@ -547,8 +558,8 @@
             function createShootingStar() {
                 const star = document.createElement('div');
                 star.className = 'shooting-star';
-                star.style.left = `${Math.random() * 80}%`;
-                star.style.top = `${Math.random() * 40}%`;
+                star.style.left = `${Math.random() * 2048}px`;
+                star.style.top = `${Math.random() * 578}px`;
                 const duration = Math.random() * 4 + 4;
                 star.style.setProperty('--shoot-duration', `${duration}s`);
                 starsContainer.appendChild(star);
@@ -561,40 +572,40 @@
             setInterval(createShootingStar, 2000);
 
             switchImage.addEventListener("click", function switchHandler() {
-            switchImage.src = "switch_off.png";
-            switchSound.volume = 0.2;
-            switchSound.play().catch(error => console.error("Audio Error:", error));
+                switchImage.src = "switch_off.png";
+                switchSound.volume = 0.2;
+                switchSound.play().catch(error => console.error("Audio Error:", error));
 
-            ambientSound.volume = 0.5;
-            setTimeout(() => {
-                ambientSound.play().catch(error => console.error("Ambient Audio Error:", error));
-            }, 500);
-
-            setTimeout(() => {
-                switchImage.style.opacity = "0";
+                ambientSound.volume = 0.5;
                 setTimeout(() => {
-                    switchOverlay.style.opacity = "0";
-                    maskLayer.style.opacity = "1";
-                    treeLayerLeft.style.opacity = "1";
-                    treeLayerRight.style.opacity = "1";
-                    flagLayer.style.opacity = "1";
-                    mainContainer.style.opacity = "1";
-                    overlayImage.style.opacity = "1";
-                    hammerImage.style.opacity = "1"; 
-                    document.body.style.pointerEvents = "none";
-                    hammerImage.style.pointerEvents = "auto"; 
-                    setTimeout(() => {
-                        hammerImage.style.animation = "bling 2s infinite"; 
-                    }, 3500); 
-                    setTimeout(() => {
-                        switchOverlay.style.display = "none";
-                        switchImage.style.pointerEvents = "none";
-                    }, 2000);
-                }, 1000);
-            }, 500);
+                    ambientSound.play().catch(error => console.error("Ambient Audio Error:", error));
+                }, 500);
 
-            switchImage.removeEventListener("click", switchHandler);
-        });
+                setTimeout(() => {
+                    switchImage.style.opacity = "0";
+                    setTimeout(() => {
+                        switchOverlay.style.opacity = "0";
+                        maskLayer.style.opacity = "1";
+                        treeLayerLeft.style.opacity = "1";
+                        treeLayerRight.style.opacity = "1";
+                        flagLayer.style.opacity = "1";
+                        mainContainer.style.opacity = "1";
+                        overlayImage.style.opacity = "1";
+                        hammerImage.style.opacity = "1"; 
+                        document.body.style.pointerEvents = "none";
+                        hammerImage.style.pointerEvents = "auto"; 
+                        setTimeout(() => {
+                            hammerImage.style.animation = "bling 2s infinite"; 
+                        }, 3500); 
+                        setTimeout(() => {
+                            switchOverlay.style.display = "none";
+                            switchImage.style.pointerEvents = "none";
+                        }, 2000);
+                    }, 1000);
+                }, 500);
+
+                switchImage.removeEventListener("click", switchHandler);
+            });
 
             hammerImage.addEventListener("click", () => {
                 if (!isHammerClicked) {
@@ -649,84 +660,83 @@
         }
 
         function playClickAnimation() {
-    clearTimeout(idleTimeout);
-    idleTimeout = null;
+            clearTimeout(idleTimeout);
+            idleTimeout = null;
 
-    const frame = document.getElementById("animationFrame");
-    const overlayImage = document.getElementById("overlayImage");
-    const gifContainer = document.querySelector(".gif-container");
-    const gifImage = document.getElementById("gifImage");
-    const carImage = document.getElementById("carImage");
-    const textLine1 = document.getElementById("textLine1");
-    const textLine2 = document.getElementById("textLine2");
-    const mask2Layer = document.getElementById("mask2Layer");
-    const blackFade = document.getElementById("blackFade");
+            const frame = document.getElementById("animationFrame");
+            const overlayImage = document.getElementById("overlayImage");
+            const gifContainer = document.querySelector(".gif-container");
+            const gifImage = document.getElementById("gifImage");
+            const carImage = document.getElementById("carImage");
+            const textLine1 = document.getElementById("textLine1");
+            const textLine1Second = document.getElementById("textLine1Second");
+            const textLine2 = document.getElementById("textLine2");
+            const mask2Layer = document.getElementById("mask2Layer");
+            const blackFade = document.getElementById("blackFade");
 
-    
-    frame.src = "stanga.png";
-    setTimeout(() => {
-        frame.src = "dreapta.png";
-    }, 500);
-
-    clickCount++;
-    if (clickCount === 1) {
-        overlayImage.style.animation = "none";
-        hit1Sound.volume = 0.3;
-        hit1Sound.play().catch(error => console.error("Hit1 Audio Error:", error));
-        overlayImage.src = "piatra1.png";
-    } else if (clickCount === 2) {
-        hit2Sound.volume = 0.3;
-        hit2Sound.play().catch(error => console.error("Hit2 Audio Error:", error));
-        overlayImage.src = "piatra2.png";
-    } else if (clickCount === 3) {
-        hit3Sound.volume = 0.3;
-        hit3Sound.play().catch(error => console.error("Hit3 Audio Error:", error));
-
-       
-        setTimeout(() => {
-            overlayImage.style.opacity = "0";
-            overlayImage.style.pointerEvents = "none";
-
-           
-            gifImage.src = "";
-            gifImage.src = "outputfinal-unscreen.gif";
-            gifContainer.style.opacity = "1";
-
+            frame.src = "stanga.png";
             setTimeout(() => {
-                frame.style.transition = "opacity 1s ease-in-out";
-                gifContainer.style.transition = "opacity 1s ease-in-out";
-                frame.style.opacity = "0";
-                gifContainer.style.opacity = "0";
+                frame.src = "dreapta.png";
+            }, 500);
+
+            clickCount++;
+            if (clickCount === 1) {
+                overlayImage.style.animation = "none";
+                hit1Sound.volume = 0.3;
+                hit1Sound.play().catch(error => console.error("Hit1 Audio Error:", error));
+                overlayImage.src = "piatra1.png";
+            } else if (clickCount === 2) {
+                hit2Sound.volume = 0.3;
+                hit2Sound.play().catch(error => console.error("Hit2 Audio Error:", error));
+                overlayImage.src = "piatra2.png";
+            } else if (clickCount === 3) {
+                hit3Sound.volume = 0.3;
+                hit3Sound.play().catch(error => console.error("Hit3 Audio Error:", error));
 
                 setTimeout(() => {
-                    carSound.volume = 0.4;
-                    setTimeout(() => { carSound.play().catch(error => console.error("Car Audio Error:", error)); }, 2000);
+                    overlayImage.style.opacity = "0";
+                    overlayImage.style.pointerEvents = "none";
+
+                    gifImage.src = "";
+                    gifImage.src = "outputfinal-unscreen.gif";
+                    gifContainer.style.opacity = "1";
 
                     setTimeout(() => {
-                        mask2Layer.style.opacity = "1";
-                        carImage.style.opacity = "1";
-                        carImage.style.animation = "drive 5s linear forwards";
+                        frame.style.transition = "opacity 1s ease-in-out";
+                        gifContainer.style.transition = "opacity 1s ease-in-out";
+                        frame.style.opacity = "0";
+                        gifContainer.style.opacity = "0";
 
                         setTimeout(() => {
-                            textLine1.style.opacity = "1";
-                            setTimeout(() => {
-                                textLine2.style.opacity = "1";
-                                setTimeout(() => {
-                                    blackFade.style.opacity = "1";            
-                                    setTimeout(() => {
-                                        window.location.href = "side2.html";
-                                    }, 1000);
-                                }, 4000);
-                            }, 1000);
-                        }, 6000);
-                    }, 7000);
-                }, 1000);
-            }, 2000);
-        }, 500); 
+                            carSound.volume = 0.4;
+                            setTimeout(() => { carSound.play().catch(error => console.error("Car Audio Error:", error)); }, 2000);
 
-        clickCount = 0;
-    }
-}
+                            setTimeout(() => {
+                                mask2Layer.style.opacity = "1";
+                                carImage.style.opacity = "1";
+                                carImage.style.animation = "drive 5s linear forwards";
+
+                                setTimeout(() => {
+                                    textLine1.style.opacity = "1";
+                                    textLine1Second.style.opacity = "1";
+                                    setTimeout(() => {
+                                        textLine2.style.opacity = "1";
+                                        setTimeout(() => {
+                                            blackFade.style.opacity = "1";            
+                                            setTimeout(() => {
+                                                window.location.href = "side2.html";
+                                            }, 1000);
+                                        }, 4000);
+                                    }, 1000);
+                                }, 6000);
+                            }, 7000);
+                        }, 1000);
+                    }, 2000);
+                }, 500);
+
+                clickCount = 0;
+            }
+        }
     </script>
 </body>
 </html>
