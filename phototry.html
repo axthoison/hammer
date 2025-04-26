@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROJECTUM</title>
     <style>
+        
         @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap');
         
         body {
@@ -18,12 +19,16 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            width: 2560px; /* Native background size */
+            width: 2560px; 
             height: 1446px;
             transform: translate(-50%, -50%) scale(var(--scene-scale, 1));
             transform-origin: center center;
             z-index: 0;
             overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         #background-image {
@@ -141,10 +146,10 @@
 
         #main-container {
             position: absolute;
-            width: 512px; /* 20% of 2560px */
+            width: 512px; 
             height: 512px;
-            left: 1280px; /* Center of 2560px, aligned with stairs */
-            top: 719px; /* Aligned with stairs */
+            left: 1280px; 
+            top: 719px;
             transform: translate(-50%, -50%);
             z-index: 4;
             opacity: 0;
@@ -155,7 +160,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 410px; /* 16% of 2560px */
+            width: 410px; 
         }
 
         #animationFrame {
@@ -165,21 +170,22 @@
 
         #overlayImage {
             position: absolute;
-            width: 400px; /* 15% of 2560px */
+            width: 400px; 
             height: auto;
-            left: 138px; /* 34% of 512px */
-            top: 15px; /* 6% of 512px */
+            left: 138px;
+            top: 15px; 
             cursor: pointer;
             user-select: none;
             z-index: 5;
+            pointer-events: none;
         }
 
         .gif-container {
             position: absolute;
-            width: 2000px; /* 78% of 2560px */
+            width: 2000px; 
             height: auto;
-            left: 340px; /* 60% of 2560px */
-            top: -210px; /* -42% of 1446px */
+            left: 340px; 
+            top: -210px;
             transform: translateX(-50%);
             z-index: 6;
             opacity: 0;
@@ -193,10 +199,10 @@
 
         #hammerImage {
             position: absolute;
-            width: 102px; /* 4% of 2560px */
+            width: 102px; 
             height: auto;
-            left: 26px; /* 5% of 512px */
-            top: 430px; /* 84% of 512px */
+            left: 26px; 
+            top: 430px; 
             cursor: pointer;
             z-index: 5;
             opacity: 0;
@@ -205,10 +211,10 @@
 
         #carImage {
             position: absolute;
-            width: 973px; /* 38% of 2560px */
+            width: 973px; 
             height: auto;
-            right: -742px; /* -29% of 2560px */
-            top: 650px; /* 45% of 1446px */
+            right: -742px; 
+            top: 650px; 
             z-index: 3; 
             opacity: 0;
             transition: opacity 1s ease-in-out;
@@ -216,22 +222,22 @@
 
         #carText {
             position: absolute;
-            top: 1080px; /* Moved up from 1120px */
-            left: 1450px; /* Moved right from 1280px */
+            top: 1080px; 
+            left: 1450px; 
             transform: translate(-50%, -50%);
             z-index: 9;
         }
 
         #textLine1Container {
-            width: 600px; /* Fixed width for both lines */
+            width: 600px; 
             text-align: center;
-            margin-left: -80px; /* Center the text within the container */
+            margin-left: -80px; 
         }
 
         #textLine1 {
             display: block;
             color: #fc332e;
-            font-size: 77px; /* Smaller font for the first line */
+            font-size: 77px; 
             font-family: "Unbounded", sans-serif;
             font-optical-sizing: auto;
             font-weight: 800;
@@ -239,13 +245,13 @@
             opacity: 0;
             transition: opacity 1s ease-in-out;
             text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
-            line-height: 1; /* Tighten line spacing */
+            line-height: 1; 
         }
 
         #textLine1Second {
             display: block;
             color: #fc332e;
-            font-size: 110px; /* Larger font for the second line in container */
+            font-size: 110px; 
             font-family: "Unbounded", sans-serif;
             font-optical-sizing: auto;
             font-weight: 800;
@@ -254,9 +260,9 @@
             transition: opacity 1s ease-in-out;
             text-align: center;
             text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
-            line-height: 1; /* Tighten line spacing */
-            letter-spacing: -2px; /* Fine-tune to fit within 300px width */
-            white-space: nowrap; /* Prevent text wrapping */
+            line-height: 1; 
+            letter-spacing: -2px; 
+            white-space: nowrap;
         }
 
         #textLine2 {
@@ -264,7 +270,7 @@
             margin-left: -200px;
             display: block;
             color: #fbf79a;
-            font-size: 60px; /* 3% of 2560px */
+            font-size: 60px; 
             font-family: "Unbounded", sans-serif;
             font-optical-sizing: auto;
             font-weight: 800;
@@ -316,7 +322,7 @@
         }
 
         #switchImage {
-            width: 512px; /* 20% of 2560px */
+            width: 512px; 
             height: auto;
             cursor: pointer;
             animation: glow 3s infinite;
@@ -337,7 +343,7 @@
 
         @media (max-width: 600px) {
             #scene-container {
-                width: 375px; /* Mobile background size */
+                width: 375px; 
                 height: 667px;
             }
 
@@ -351,64 +357,64 @@
             }
 
             #main-container {
-                width: 94px; /* 25% of 375px */
+                width: 94px; 
                 height: 94px;
-                left: 188px; /* Center of 375px, aligned with stairs */
-                top: 354px; /* 53% of 667px, aligned with stairs */
+                left: 188px; 
+                top: 354px; 
             }
 
             .image-container {
-                width: 75px; /* 20% of 375px */
+                width: 75px; 
                 left: 0;
                 top: 0;
             }
 
             #overlayImage {
-                width: 68px; /* 18% of 375px */
-                left: 32px; /* 34% of 94px */
-                top: 6px; /* 6% of 94px */
+                width: 68px; 
+                left: 32px; 
+                top: 6px; 
             }
 
             #hammerImage {
-                width: 19px; /* 5% of 375px */
-                left: 5px; /* 5% of 94px */
-                top: 79px; /* 84% of 94px */
+                width: 19px; 
+                left: 5px; 
+                top: 79px; 
             }
 
             .gif-container {
-                width: 225px; /* 60% of 375px */
-                left: 225px; /* 60% of 375px */
-                top: -280px; /* -42% of 667px */
+                width: 225px; 
+                left: 225px; 
+                top: -280px;
                 transform: translateX(-50%);
             }
 
             #carImage {
-                width: 150px; /* 40% of 375px */
-                right: -109px; /* -29% of 375px */
-                top: 367px; /* 55% of 667px */
+                width: 150px; 
+                right: -109px; 
+                top: 367px; 
             }
 
             #carText {
-                top: 388px; /* Adjusted for mobile, moved up from 434px */
-                left: 234px; /* Adjusted for mobile, moved right from 188px */
+                top: 388px; 
+                left: 234px;
             }
 
             #textLine1Container {
-                width: 150px; /* Adjusted for mobile */
+                width: 150px; 
             }
 
             #textLine1 {
-                font-size: 19px; /* Adjusted for mobile */
+                font-size: 19px; 
             }
 
             #textLine1Second {
-                font-size: 24px; /* Adjusted for mobile */
-                letter-spacing: -1px; /* Fine-tune for mobile */
+                font-size: 24px; 
+                letter-spacing: -1px; 
             }
 
             #textLine2 {
-                margin-top: 50px; /* Adjusted for mobile */
-                font-size: 15px; /* Adjusted for mobile */
+                margin-top: 50px; 
+                font-size: 15px; 
             }
 
             .star {
@@ -425,7 +431,7 @@
             }
 
             .shooting-star::before {
-                width: 38px; /* 10% of 375px */
+                width: 38px; 
                 height: 1px;
                 filter: blur(0.5px);
             }
@@ -474,27 +480,22 @@
     <div id="blackFade"></div>
 
     <script>
-        // Dynamic scaling for #scene-container to cover viewport
+        // dynamic scaling
         function updateScale() {
             const sceneContainer = document.getElementById('scene-container');
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
             const isMobile = windowWidth <= 600;
-
-            // Background dimensions
             const bgWidth = isMobile ? 375 : 2560;
             const bgHeight = isMobile ? 667 : 1446;
-
-            // Calculate scale to cover the viewport
             const scaleWidth = windowWidth / bgWidth;
             const scaleHeight = windowHeight / bgHeight;
             const coverScale = Math.max(scaleWidth, scaleHeight);
 
-            // Apply the scale to the entire scene-container
             sceneContainer.style.setProperty('--scene-scale', coverScale);
         }
 
-        // Run on load and resize
+
         window.addEventListener('load', updateScale);
         window.addEventListener('resize', updateScale);
 
@@ -615,21 +616,19 @@
                     setTimeout(() => {
                         hammerImage.style.display = "none";
                         hammerImage.style.pointerEvents = "none";
-                        overlayImage.style.pointerEvents = "auto";
                         document.body.style.pointerEvents = "none";
-                        
                         animationFrame.src = "drept.png";
                         imageContainer.style.opacity = "1";
                         
                         setTimeout(() => {
                             overlayImage.style.animation = "stoneGlow 2s infinite";
+                            overlayImage.style.pointerEvents = "auto";
+                            overlayImage.addEventListener("click", playClickAnimation);
                         }, 3000);
 
                         setTimeout(() => {
                             playIdleAnimation();
                         }, 2000);
-
-                        overlayImage.addEventListener("click", playClickAnimation);
                     }, 500);
                 }
             });
@@ -696,7 +695,6 @@
                 setTimeout(() => {
                     overlayImage.style.opacity = "0";
                     overlayImage.style.pointerEvents = "none";
-
                     gifImage.src = "";
                     gifImage.src = "outputfinal-unscreen.gif";
                     gifContainer.style.opacity = "1";
