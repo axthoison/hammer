@@ -1,0 +1,482 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@800&display=swap');
+        
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #1a1a1a;
+}
+
+#scene-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 2560px;
+    height: 1446px;
+    transform: translate(-50%, -50%) scale(var(--scene-scale, 1));
+    transform-origin: center center;
+    z-index: 0;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2560px;
+    height: 1446px;
+    z-index: 0;
+}
+
+.stars-container {
+    position: absolute;
+    width: 2560px;
+    height: 1446px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+    background: transparent;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--twinkle-duration) infinite;
+    width: 3px;
+    height: 3px;
+    opacity: 0.5;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 
+               0 0 0 6px rgba(255,255,255,0.1), 
+               0 0 15px rgba(255,255,255,0.3);
+    animation: shoot var(--shoot-duration) linear infinite;
+    pointer-events: none;
+}
+
+.shooting-star::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+    filter: blur(1px);
+}
+
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 0.8; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.3);
+    }
+}
+
+@keyframes shoot {
+    0% {
+        transform: rotate(315deg) translateX(0);
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(315deg) translateX(-800px);
+        opacity: 0;
+    }
+}
+
+#treeLayerLeft, #treeLayerRight, #flagLayer, #maskLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2560px;
+    height: 1446px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: block;
+}
+
+#mask2Layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2560px;
+    height: 1446px;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: block;
+}
+
+#maskMobileLayer, #mask2MobileLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2560px;
+    height: 1446px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: none;
+}
+
+#maskMobileLayer {
+    z-index: 2;
+}
+
+#mask2MobileLayer {
+    z-index: 8;
+}
+
+#main-container {
+    position: absolute;
+    width: 512px;
+    height: 512px;
+    left: 1280px;
+    top: 719px;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.image-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 410px;
+}
+
+#animationFrame {
+    width: 100%;
+    position: relative;
+}
+
+#overlayImage {
+    position: absolute;
+    width: 400px;
+    height: auto;
+    left: 138px;
+    top: 15px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 6;
+    pointer-events: none;
+}
+
+.gif-container {
+    position: absolute;
+    width: 2000px;
+    height: auto;
+    left: 340px;
+    top: -210px;
+    transform: translateX(-50%);
+    z-index: 7;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#gifImage {
+    width: 100%;
+    height: auto;
+}
+
+#hammerImage {
+    position: absolute;
+    width: 102px;
+    height: auto;
+    left: 26px;
+    top: 430px;
+    cursor: pointer;
+    z-index: 6;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#carImage {
+    position: absolute;
+    width: 973px;
+    height: auto;
+    right: -742px;
+    top: 650px;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#carText {
+    position: absolute;
+    top: 1000px;
+    left: 1300px;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+}
+
+#textLine1Container {
+    width: 800px;
+    text-align: center;
+    margin-left: 50px;
+}
+
+#textLine1 {
+    display: block;
+    color: #fc332e;
+    font-size: 120px;
+    font-family: "Unbounded", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
+    line-height: 1;
+}
+
+#textLine1Second {
+    display: block;
+    color: #fc332e;
+    font-size: 180px;
+    font-family: "Unbounded", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    text-align: center;
+    text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
+    line-height: 1;
+    letter-spacing: -2px;
+    white-space: nowrap;
+}
+
+#textLine2 {
+    margin-top: 300px;
+    margin-left: 0px;
+    display: block;
+    color: #fbf79a;
+    font-size: 60px;
+    font-family: "Unbounded", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    text-shadow: -8px 0 6px rgba(2, 8, 8, 0.9);
+}
+
+@keyframes drive {
+    0% { right: -742px; }
+    100% { right: 3200px; }
+}
+
+@keyframes bling {
+    0% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5)); }
+    50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9)); }
+    100% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5)); }
+}
+
+@keyframes stoneGlow {
+    0% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)); }
+    50% { filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7)); }
+    100% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)); }
+}
+
+@keyframes glow {
+    0% { filter: drop-shadow(0 0 5px rgba(200, 200, 200, 0.7)); }
+    25% { filter: drop-shadow(0 0 15px rgba(200, 200, 200, 0.9)); }
+    50% { filter: drop-shadow(0 0 8px rgba(200, 200, 200, 0.7)); }
+    75% { filter: drop-shadow(0 0 20px rgba(200, 200, 200, 0.9)); }
+    100% { filter: drop-shadow(0 0 5px rgba(200, 200, 200, 0.7)); }
+}
+
+#switchOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 11;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 2s ease-in-out;
+}
+
+#switchImage {
+    width: 512px;
+    height: auto;
+    cursor: pointer;
+    animation: glow 3s infinite;
+    transition: opacity 1s ease-in-out;
+}
+
+#blackFade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 12;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+@media (max-width: 600px) {
+    #switchImage {
+        width: 256px;
+    }
+
+    #scene-container {
+        width: 375px;
+        height: 667px;
+    }
+
+    #background-image {
+        width: 375px;
+        height: 667px;
+        content: url('mobile.png');
+    }
+
+    .stars-container {
+        width: 375px;
+        height: 667px;
+        z-index: 1;
+    }
+
+    .star {
+        width: 1px;
+        height: 1px;
+    }
+
+    .shooting-star {
+        width: 2px;
+        height: 2px;
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.2), 
+                   0 0 0 4px rgba(255,255,255,0.1), 
+                   0 0 8px rgba(255,255,255,0.3);
+    }
+
+    .shooting-star::before {
+        width: 38px;
+        height: 1px;
+        filter: blur(0.5px);
+    }
+
+    #maskLayer, #treeLayerLeft, #treeLayerRight, #flagLayer, #mask2Layer {
+        display: none;
+    }
+
+    #maskMobileLayer, #mask2MobileLayer {
+        display: block;
+        width: 375px;
+        height: 667px;
+    }
+
+    #main-container {
+        width: 141px;
+        height: 141px;
+        left: 180px;
+        top: 308px;
+        z-index: 5;
+    }
+
+    .image-container {
+        width: 112.5px;
+        left: 0;
+        top: 0;
+    }
+
+    #overlayImage {
+        width: 102px;
+        left: 42px;
+        top: 15px;
+        z-index: 6;
+    }
+
+    #hammerImage {
+        width: 28.5px;
+        left: 20px;
+        top: 118.5px;
+        z-index: 6;
+    }
+
+    .gif-container {
+        width: 500px;
+        left: 95px;
+        top: -40px;
+        transform: translateX(-50%);
+        z-index: 7;
+    }
+
+    #carImage {
+        width: 235px;
+        right: -300px; 
+        top: 310px;
+        z-index: 3;
+    }
+
+    #carText {
+        top: 420px;
+        left: 265px;
+        z-index: 9;
+        width: 100%;
+        transform: translate(-50%, -50%);
+    }
+
+    #textLine1Container {
+        width: 225px;
+        margin-left: 0;
+    }
+
+    #textLine1 {
+        font-size: 28.5px;
+    }
+
+    #textLine1Second {
+        font-size: 36px;
+        letter-spacing: -1px;
+    }
+
+    #textLine2 {
+        margin-top: 125px;
+        margin-left: -150px;
+        font-size: 17.5px;
+    }
+
+    @keyframes drive {
+        0% { right: -300px; } 
+        100% { right: 900px; }
+    }
+}
+
+@media (min-width: 601px) {
+    #maskMobileLayer, #mask2MobileLayer {
+        display: none;
+    }
+
+    #maskLayer, #treeLayerLeft, #treeLayerRight, #flagLayer, #mask2Layer {
+        display: block;
+    }
+}
